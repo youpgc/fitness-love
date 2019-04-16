@@ -1,30 +1,31 @@
 const DB = {
-    init() {
-        var databaseName = 'learning',
-            version = 1,
-            dataIndex = 0;
-        var db;
+    db: null,
+    init(basename, name, nameObj) {
+        var _this = this;
+        var databaseName = basename,
+            version = 1;
         var objectStore;
         var request = window.indexedDB.open(databaseName, version);
 
         request.onerror = function(event) {}
         request.onsuccess = function(event) {
-                db = request.result //可以拿到数据库对象
-                readAll();
+                _this.db = request.result //可以拿到数据库对象
+                _this.getAll();
             }
             //如果指定的版本号，大于数据库的实际版本号，就会发生数据库升级事件upgradeneeded
         request.onupgradeneeded = function(event) {
-            db = event.target.result;
-            if (!db.objectStoreNames.contains('data')) { //判断是否存在
-                objectStore = db.createObjectStore('data', { keyPath: 'id' });
+            _this.db = event.target.result;
+            if (!_this.db.objectStoreNames.contains(name)) { //判断是否存在
+                objectStore = _this.db.createObjectStore(name, { keyPath: 'id' });
                 //新建索引，参数索引名称、索引所在的属性、配置对象
-                objectStore.createIndex('nameIndex', 'name', { unique: true });
-                objectStore.createIndex('ageIndex', 'age', { unique: false });
+                nameObj.map(item => {
+                    objectStore.createIndex(item.key, item.name, { unique: item.unique });
+                })
             }
         }
     },
     put(data) { //新增
-        var request = db.transaction(['data'], 'readwrite')
+        var request = this.db.transaction(['data'], 'readwrite')
             .objectStore('data')
             .add(data);
         request.onsuccess = function(event) {
@@ -34,8 +35,8 @@ const DB = {
             console.log('该数据已存在');
         }
     },
-    get(nameIndex, value) { //查找
-        var transaction = db.transaction(['data'], 'readonly');
+    getList(nameIndex, value) { //查找
+        var transaction = this.db.transaction(['data'], 'readonly');
         var store = transaction.objectStore('data');
         var index = store.index(nameIndex);
         var request = index.openCursor(IDBKeyRange.only(value));
@@ -50,8 +51,8 @@ const DB = {
             }
         }
     },
-    getItem(id) {
-        var transaction = db.transaction(['data'], 'readonly');
+    getItem(id) { //精确查找
+        var transaction = this.db.transaction(['data'], 'readonly');
         var store = transaction.objectStore('data');
         var index = store.index('id');
         var request = index.get(id);
@@ -63,6 +64,27 @@ const DB = {
                 console.log('暂无此数据');
             }
         }
+    },
+    delete(id) { //删除
+        var request = this.db.transaction(['data'], 'readwrite')
+            .objectStore('data')
+            .delete(id);
+        request.onsuccess = function(event) {
+            //do something...
+        };
+    },
+    getAll() { //得到所有数据
+        var objectStore = this.db.transaction('data').objectStore('data');
+        objectStore.openCursor().onsuccess = function(event) {
+            var cursor = event.target.result;
+            if (cursor) {
+                var data = cursor.value;
+                console.log(data);
+                cursor.continue(); //将光标移到下一个对象,若是当前对象是最后一个数据,则指向null
+            } else {
+                console.log('empty')
+            }
+        };
     }
 };
 export default DB;

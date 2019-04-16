@@ -170,11 +170,43 @@ input:-ms-input-placeholder {
     height: 100%;
 }
 
+.h100 {
+    height: 100%;
+}
+
 .oh {
     overflow: hidden;
 }
 
 .os {
     overflow: scroll;
-    height: calc(100vh - 1.76rem);
+    height: calc(100vh - 1.98rem);
+}
+
+.heados {
+    overflow: scroll;
+    height: calc(100vh - 0.88rem);
+}
+
+.navos {
+    overflow: scroll;
+    height: calc(100vh - 1.1rem);
+}
+
+.swiper-pagination-bullet {
+    width: 0.16rem;
+    height: 0.16rem;
+    background: rgba(0, 0, 0, 0);
+    border: 1px solid #fff;
+    opacity: 1;
+}
+
+.swiper-pagination-bullet-active {
+    background: #fff;
+}
+
+.swiper-pagination-fraction,
+.swiper-pagination-custom,
+.swiper-container-horizontal>.swiper-pagination-bullets {
+    bottom: 0.6rem;
 }
