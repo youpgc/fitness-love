@@ -6,6 +6,13 @@ import moreIndex from '@/page/more/index'
 import workIndex from '@/page/workouts/index'
 import startIndex from '@/page/start/index'
 import login from '@/page/login/login'
+import register from '@/page/login/register'
+import step1 from '@/page/login/step1'
+import step2 from '@/page/login/step2'
+import step3 from '@/page/login/step3'
+import step4 from '@/page/login/step4'
+import step5 from '@/page/login/step5'
+import step6 from '@/page/login/step6'
 
 Vue.use(Router)
 
@@ -36,5 +43,33 @@ export default new Router({
         path: '/login',
         name: 'login',
         component: login,
+    }, {
+        path: '/register',
+        name: 'register',
+        component: register
+    }, {
+        path: '/step1',
+        name: 'step1',
+        component: step1
+    }, {
+        path: '/step2',
+        name: 'step2',
+        component: step2
+    }, {
+        path: '/step3',
+        name: 'step3',
+        component: step3
+    }, {
+        path: '/step4',
+        name: 'step4',
+        component: step4
+    }, {
+        path: '/step5',
+        name: 'step5',
+        component: step5
+    }, {
+        path: '/step6',
+        name: 'step6',
+        component: step6
     }]
 })

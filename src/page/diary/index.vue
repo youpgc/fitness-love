@@ -40,10 +40,10 @@ export default {
       var _this = this;
       setTimeout(function(){
         console.log(DB.db)
-        // _this.$router.push({
-        //   path: '/startIndex',
-        //   name: 'startIndex'
-        // });
+        _this.$router.push({
+          path: '/register',
+          name: 'register'
+        });
       },100)
     }
   }

@@ -13,8 +13,8 @@
                 Fitness Love - This app will allow you to achieve great results, within a short period of time.
               </div>
               <div class="navig-btns">
-                <div class="navig-btn sign-facebook">sign up with phone number</div>
-                <div class="navig-btn sign-email">sign up with email</div>
+                <router-link to="/register" class="navig-btn sign-facebook">sign up with phone number</router-link>
+                <router-link to="/register" class="navig-btn sign-email">sign up with email</router-link>
               </div>
             </div>
           </div>
@@ -166,11 +166,13 @@ export default {
   padding-top: 1rem;
 }
 .navig-btn{
+  display: block;
   width: 100%;
   height: 1rem;
   line-height: 1rem;
   font-size: 0.4rem;
   font-weight: bold;
+  color: #fff;
   border-radius: 0.5rem;
   margin-bottom: 0.5rem;
 }
