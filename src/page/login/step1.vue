@@ -5,7 +5,7 @@
       <div class="step-cont">
         <div class="step-title">Step 1/5</div>
         <div class="step-label">Hi! What your name ?</div>
-        <div class="step-camera" :style="'background-image:url('+camera+')'"></div>
+        <div class="step-camera"></div>
         <div class="step-form">
           <div class="form-item">
             <div class="form-label">Your Name</div>
@@ -46,7 +46,6 @@ export default {
         src: require('@/assets/images/icon-30.png'),
         span: 'SKIP'
       },
-      camera: require('@/assets/images/icon-58.png'),
       formData: {
         name: '',
         age: '',
@@ -85,18 +84,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.step-cont{
-  text-align: left;
-  padding: 0 0.5rem;
-}
-.step-title{
-  font-size: 0.6rem;
-  font-weight: bold;
-  line-height: 1.2rem;
-}
-.step-label{
-  font-size: 0.3rem;
-}
 .step-camera{
   width: 2.4rem;
   height: 2.4rem;
@@ -104,16 +91,17 @@ export default {
   background-position: center;
   background-repeat: no-repeat;
   background-size: 100%;
+  background-image: url('../../assets/images/icon-58.png');
   margin: 0.8rem auto 0;
 }
 .step-form{
-  margin-top: 1rem;
+  padding-top: 1rem;
 }
 .form-item{
   text-align: left;
   border: 1px solid #e9e9e9;
   border-radius: 0.1rem;
-  margin-bottom: 0.32rem; 
+  margin-bottom: 0.5rem; 
   padding: 0.2rem 0.3rem;
   position: relative;
 }
@@ -137,6 +125,7 @@ export default {
   width: 100%;
   height: 1rem;
   line-height: 1rem;
+  font-size: 0.3rem;
   text-align: center;
   border-radius: 0.5rem;
   border: 0.04rem solid #e9e9e9;
@@ -149,6 +138,7 @@ export default {
 }
 .step-type-item{
   width: 50%;
+  font-size: 0.3rem;
   color: #6d819c;
 }
 .step-btn{
@@ -163,14 +153,5 @@ export default {
 }
 .step-btn-act{
   left: calc(50% + 0.04rem);
-}
-.step-next{
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 1.2rem;
-  line-height: 1rem;
-  border-radius: 0.5rem 0.5rem 0 0;
 }
 </style>

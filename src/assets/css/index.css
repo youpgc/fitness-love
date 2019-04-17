@@ -136,6 +136,10 @@ img {
     height: 100%;
 }
 
+div {
+    box-sizing: border-box;
+}
+
 
 /*--placeholder--*/
 
@@ -170,13 +174,54 @@ input:-ms-input-placeholder {
     height: 100%;
 }
 
+
+/* display css*/
+
+.dflex-between {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+
+/* color css */
+
+.cf {
+    color: #fff !important;
+}
+
+.cblue {
+    color: #3b5998 !important;
+}
+
+
+/* background-color css */
+
+.bblue {
+    background-color: #3b5998 !important;
+}
+
+.bf4 {
+    background-color: #f4f4f4 !important;
+}
+
 .h100 {
     height: 100%;
 }
 
+
+/* padding css*/
+
 .pt88 {
     padding-top: 0.88rem;
 }
+
+.pb110 {
+    padding-bottom: 1.1rem;
+}
+
+
+/* oh css*/
 
 .oh {
     overflow: hidden;
@@ -198,7 +243,7 @@ input:-ms-input-placeholder {
 }
 
 .shadow {
-    box-shadow: 0 0 0.4rem 0 #ddd;
+    box-shadow: 0 0.05rem 0.2rem 0 #ddd;
 }
 
 .gradient-back {
@@ -232,4 +277,32 @@ input:-ms-input-placeholder {
 .swiper-pagination-custom,
 .swiper-container-horizontal>.swiper-pagination-bullets {
     bottom: 0.6rem;
+}
+
+
+/*step css*/
+
+.step-cont {
+    text-align: left;
+    padding: 0 0.5rem;
+}
+
+.step-title {
+    font-size: 0.6rem;
+    font-weight: bold;
+    line-height: 1.2rem;
+}
+
+.step-label {
+    font-size: 0.3rem;
+}
+
+.step-next {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1.2rem;
+    line-height: 1rem;
+    border-radius: 0.5rem 0.5rem 0 0;
 }

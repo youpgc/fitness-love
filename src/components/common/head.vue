@@ -58,7 +58,6 @@ export default {
   background: #fff;
   padding: 0 0.5rem;
   overflow: hidden;
-  /* box-shadow: 0 0 0.4rem 0 #ddd; */
 }
 .head-cont {
   height: 0.88rem;

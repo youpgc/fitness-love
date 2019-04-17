@@ -5,6 +5,15 @@
       <div class="step-cont">
         <div class="step-title">Step 4/5</div>
         <div class="step-label">How active are you ?</div>
+        <div class="step-form">
+          <div class="step-item" 
+            @click="selectThis(index)" 
+            :class="item.checked?'gradient-back active':''" 
+            v-for="(item,index) in active" 
+            :key="index">
+            {{item.title}}
+          </div>
+        </div>
       </div>
       <div class="step-next gradient-back" @click="nextStep()">NEXT</div>
     </div>
@@ -26,6 +35,13 @@ export default {
         src: require('@/assets/images/icon-30.png'),
         span: 'SKIP'
       },
+      frequency: '',
+      active: [
+        {title: 'NOT ACTIVE', checked: false},
+        {title: 'LIGHT ACTIVE', checked: false},
+        {title: 'ACTIVE', checked: false},
+        {title: 'VERY ACTIVE', checked: false}
+      ]
     }
   },
   created(){
@@ -37,6 +53,13 @@ export default {
     },
     skip(){
       console.log('skip');
+    },
+    selectThis(index){
+      this.active.forEach(item=>{
+        item.checked = false;
+      })
+      this.active[index].checked = true;
+      this.frequency = this.active[index].title;
     },
     nextStep(){
       this.$router.push({
@@ -50,25 +73,21 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.step-cont{
-  text-align: left;
-  padding: 0 0.5rem;
+.step-form{
+  padding: 0.5rem 0.5rem 0;
 }
-.step-title{
-  font-size: 0.6rem;
-  font-weight: bold;
-  line-height: 1.2rem;
-}
-.step-label{
-  font-size: 0.3rem;
-}
-.step-next{
-  position: fixed;
-  bottom: 0;
-  left: 0;
+.step-item{
   width: 100%;
-  height: 1.2rem;
-  line-height: 1rem;
-  border-radius: 0.5rem 0.5rem 0 0;
+  height: 1.5rem;
+  line-height: 1.5rem;
+  text-align: center;
+  color: #6d819c;
+  border: 0.04rem solid #e9e9e9;
+  border-radius: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.active{
+  color: #fff;
+  border-color: #fff;
 }
 </style>

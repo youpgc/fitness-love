@@ -72,7 +72,7 @@ export default {
   left: 0;
   width: 100%;
   height: 1.1rem;
-  box-shadow: 0 0 0.1rem 0 #ddd;
+  box-shadow: 0 -0.05rem 0.2rem 0 #ddd;
   background: #fff;
 }
 .tab {
@@ -115,5 +115,7 @@ export default {
 .nav-other img{
   width: 0.8rem;
   height: 0.8rem;
+  border-radius: 50%;
+  box-shadow: 0 0.05rem 0.16rem 0 rgba(0, 0, 0, 0.4);
 }
 </style>

@@ -6,7 +6,7 @@
         <div class="register-logo">
           <img :src="logo">
         </div>
-        <div class="register-btn register-phone">sign up with phone number</div>
+        <div class="register-btn register-phone">Sign up with phone number</div>
         <div class="register-cut">————<span>or</span>————</div>
         <div class="register-form">
           <div class="form-item">
@@ -116,7 +116,7 @@ export default {
   text-align: left;
   border: 1px solid #e9e9e9;
   border-radius: 0.1rem;
-  margin-bottom: 0.32rem; 
+  margin-bottom: 0.32rem;
   padding: 0.2rem 0.3rem;
   position: relative;
 }
@@ -135,16 +135,6 @@ export default {
   line-height: 0.4rem;
   color: #282c37;
   font-size: 0.36rem;
-}
-.form-input input:after{
-  content: '';
-  position: absolute;
-  display: block;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: #ccc;
 }
 .toLogin{
   margin-top: 0.6rem;
