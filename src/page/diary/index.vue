@@ -2,7 +2,7 @@
   <div class="pb110">
     <div class="navos">
       <div class="diary-cont">
-        <div class="diary-msg">
+        <div class="diary-msg" @click="msgView()">
           <div class="diary-msg-img">
             <img :src="icon.msg">
             <span>{{info.msgIndex}}</span>
@@ -17,18 +17,36 @@
             <div>Things look allright.</div>
           </div>
         </div>
-        <div class="diary-info dflex-between">
-          <div class="diary-info-item">
-            <div class="diary-info-label">Your goal</div>
-            <div class="diary-info-blod">Gain weight</div>
-          </div>
-          <div class="diary-info-item">
-            <div class="diary-info-label">Latest weight, Jan 22</div>
-            <div class="dflex-between">
-              <div>74<span>kg</span></div>
-              <div class="diary-info-trend"><img :src="icon.trend"></div>
-            </div>
-          </div>
+        <!-- <info-html v-bind="infoData" class="diary-temp"></info-html> -->
+        <div class="diary-log diary-temp">
+          <swiper :options="swiperOption">
+            <swiper-slide v-for="(slide, index) in logs" :key="index">
+                <div class="log-date">
+                    {{slide.date}}
+                </div>
+                <div class="log-cont dflex-between">
+                  <div class="log-dev">
+                    <label>1317</label>
+                    <span>Eaten</span>
+                  </div>
+                  <div class="log-cal">
+                    <div class="log-case">
+                      <div class="log-master">
+                        <label>1970</label>
+                        <span>Calories left</span>
+                      </div>
+                      <div class="log-tag">DETAIL</div>
+                    </div>
+                  </div>
+                  <div class="log-dev">
+                    <label>768</label>
+                    <span>Burned</span>
+                  </div>
+                </div>
+            </swiper-slide>
+          </swiper>
+          <div class="swiper-prev swiper-btn"><img :src="icon.prev"/></div>
+          <div class="swiper-next swiper-btn"><img :src="icon.next"/></div>
         </div>
       </div>
     </div>
@@ -38,16 +56,19 @@
 
 <script>
 import navBar from '@/components/common/nav';
+import Swiper from 'swiper';
 import DB from '@/assets/js/DB';
 import axios from 'axios';
+import infoHtml from '@/components/dairy/info';
+
 export default {
   components: {
-    navBar
+    navBar,
+    infoHtml
   },
   name: 'diaryIndex',
   data () {
     return {
-      show: false,
       icon: {
         back: require('@/assets/images/back-07.png'),
         msg: require('@/assets/images/icon-02.png'),
@@ -60,10 +81,28 @@ export default {
         username: 'Youpgc',
         msgIndex: '2',
       },
+      infoData: {
+        msg: '123123'
+      },
+      logs:[
+        {title: '1317', date: 'yesterday'},
+        {title: '1970', date: 'today'},
+        {title: '768', date: 'tomorrow'},
+      ],
+      swiperOption: {
+          initialSlide: 1,
+          loop: true,
+          navigation: {
+              prevEl: '.swiper-prev',
+              nextEl: '.swiper-next',
+          },
+          pagination: {
+              el: '.swiper-pagination',
+          },
+      },
     }
   },
   created(){
-    this.show = true;
     this.initDB();
   },
   mounted(){
@@ -85,6 +124,9 @@ export default {
       //     name: 'register'
       //   });
       // },100)
+    },
+    msgView(){
+      console.log('msg')
     }
   }
 }
@@ -150,37 +192,90 @@ export default {
   .diary-data-greeting span{
     font-weight: bold;
   }
-  .diary-info{
-    width: 100%;
-    height: 1.85rem;
+  .diary-temp{
     background: #fff;
     box-shadow: 0 0.1rem 0.4rem 0 rgba(0, 0, 0, 0.2);
     border-radius: 0.2rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  .diary-log{
+    width: 100%;
+    height: 4.3rem;
     position: relative;
   }
-  .diary-info::after{
-    content: '';
+  .swiper-btn{
     position: absolute;
-    left: 50%;
-    top: 0;
-    transform: translate(-50%,0);
-    height: 100%;
-    border: 0.5px solid #ddd;
+    top: 0.3rem;
+    z-index: 9;
+    width: 0.48rem;
+    height: 0.48rem;
+    outline: none;
   }
-  .diary-info-item{
-    width: 100%;
-    padding: 0.3rem 0;
+  .swiper-prev{
+    left: 0.3rem;
   }
-  .diary-info-label{
-    font-size: 0.3rem;
+  .swiper-next{
+    right: 0.3rem;
+  }
+  .log-date{
+    line-height: 1rem;
+  }
+  .log-cont{
+    padding: 0 0.3rem;
+    height: 2.6rem;
+  }
+  .log-dev{
+    width: 1.5rem;
+    padding-top: 1.1rem;
+  }
+  .log-dev label{
+    display: block;
+    color: #282c37;
+  }
+  .log-dev span{
+    display: block;
     color: #6d819c;
   }
-  .diary-info-blod{
-    line-height: 1rem;
-    font-size: 0.5rem;
+  .log-cal{
+    width: calc(100% - 3rem);
+    position: relative;
   }
-  .diary-info-trend{
-    width: 1.06rem;
-    height: 0.54rem;
+  .log-case{
+    width: 2.6rem;
+    height: 2.6rem;
+    margin: 0 auto;
+    border: 0.12rem solid #e9e9e9;
+    border-radius: 50% 50%;
+  }
+  .log-master{
+    padding-top: 0.8rem;
+    line-height: 1;
+  }
+  .log-master label{
+    display: block;
+    color: #282c37;
+    font-size: 0.6rem;
+  }
+  .log-master span{
+    display: block;
+    color: #6d819c;
+    font-size: 0.36rem;
+  }
+  .log-tag{
+    width: 1.02rem;
+    height: 0.42rem;
+    line-height: 0.4rem;
+    color: #6d819c;
+    background: #fff;
+    font-size: 0.2rem;
+    font-weight: bold;
+    border: 0.04rem solid #e9e9e9;
+    border-radius: 0.21rem;
+    position: absolute;
+    z-index: 3;
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%,0);
   }
 </style>
