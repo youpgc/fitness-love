@@ -1,7 +1,7 @@
 <template>
     <div class="diary-info diary-temp dflex-between">
         <div class="diary-info-item">
-        <div class="diary-info-label">Your goal{{data.msg}}</div>
+        <div class="diary-info-label">Your goal</div>
         <div class="diary-info-blod">Gain weight</div>
         </div>
         <div class="diary-info-item">
@@ -16,7 +16,7 @@
 
 <script>
 export default {
-    props: ["data"],
+    props: ["info"],
     name: 'info',
     data(){
         return {

@@ -79,12 +79,13 @@ const DB = {
             var cursor = event.target.result;
             if (cursor) {
                 var data = cursor.value;
-                console.log(data);
+                // console.log(data);
                 cursor.continue(); //将光标移到下一个对象,若是当前对象是最后一个数据,则指向null
             } else {
-                console.log('empty')
+                // console.log('empty')
             }
         };
     }
 };
+
 export default DB;
