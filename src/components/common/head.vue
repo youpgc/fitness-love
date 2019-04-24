@@ -88,6 +88,16 @@ export default {
   height: 0.43rem;
   display: block;
 }
+.icon-search{
+  display: block;
+  width: 0.44rem;
+  height: 0.44rem;
+}
+.icon-add{
+  display: block;
+  width: 0.42rem;
+  height: 0.42rem;
+}
 .head-frfun {
   position: absolute;
   right: 0;

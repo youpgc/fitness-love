@@ -9,16 +9,24 @@
           </div>
           <div class="f20 nav-lab">{{item.label}}</div>
         </router-link>
-        <div class="nav-other" v-else>
+        <div class="nav-other" @click="getMore" v-else>
             <img :src="item.src"/>
         </div>
       </li>
     </ul>
+    <menu-html v-if="menu.more" @menu="getMore" @link="getLink"></menu-html>
+    <cut-html v-if="menu.cut" @closecut="closeCut" v-bind:cut="menu.checked"></cut-html>
   </div>
 </template>
 
 <script>
+import menuHtml from '@/components/common/short';
+import cutHtml from '@/components/common/shortCut';
 export default {
+  components: {
+    menuHtml,
+    cutHtml
+  },
   props: ['grade'],
   name: 'navBar',
   data() {
@@ -26,7 +34,7 @@ export default {
       tab: [
         {
           label: 'Diary',
-          path: '/diaryIndex',
+          path: '/',
           src: require('@/assets/images/home-02.png'),
           on: require('@/assets/images/home-03.png'),
           style: 'width: 0.58rem;height:0.58rem'
@@ -59,9 +67,30 @@ export default {
           style: 'width: 0.56rem;height:0.5rem'
         },
       ],
+      menu: {
+        more: false,
+        cut: false,
+        checked: '',
+      }
     };
   },
-  methods: {},
+  methods: {
+    getMore(){
+      var status = this.menu.more;
+      this.menu.more = !status;
+    },
+    getLink(type){
+      this.menu.more = false;
+      if(type == 'water' || type == 'food'){
+        this.menu.checked = type;
+        this.menu.cut = true;
+      }
+    },
+    closeCut(){
+      this.menu.cut = false;
+      this.menu.checked = '';
+    }
+  },
 };
 </script>
 
@@ -70,6 +99,7 @@ export default {
   position: fixed;
   bottom: 0;
   left: 0;
+  z-index: 99;
   width: 100%;
   height: 1.1rem;
   box-shadow: 0 -0.05rem 0.2rem 0 #ddd;

@@ -2,10 +2,10 @@
     <div class="diary-plan diary-temp">
         <div class="plan-head">
             <div class="plan-head-title">{{plan.title}}</div>
-            <router-link to="/addplan" class="plan-head-add" v-if="plan.type == 1 || plan.type == 2"><img :src="icon.add"/> <span> ADD {{plan.type == 1 ? 'PLAN' : 'FOOD'}}</span></router-link>
+            <router-link to="/addplan" class="plan-head-add" v-if="plan.type != 3"><img :src="icon.add"/> <span> ADD {{plan.type == 1 ? 'PLAN' : 'FOOD'}}</span></router-link>
         </div>
-        <div class="plan-cont bbse9" v-for="(item,index) in plan.list" :key="index" @click="itemDelet($event,item,index)">
-            <div class="plan-cont-item" :ref="plan.ref+'-'+index" v-if="plan.type == 1">
+        <div class="plan-cont bbse9" data-type='0' v-for="(item,index) in plan.list" :key="index">
+            <div class="plan-cont-item" @touchstart.capture="touchstart" @touchend.capture="touchend" @click="skip(item,index)" v-if="plan.type == 1">
                 <div class="plan-item-time">{{item.date}}</div>
                 <div class="plan-item-ready ellipsis">{{item.text}}</div>
                 <div class="plan-ready-cont">
@@ -19,7 +19,7 @@
                     </div>
                 </div>
             </div>
-            <div class="plan-cont-item" :ref="plan.ref + '-' + index" v-if="plan.type == 2">
+            <div class="plan-cont-item" @touchstart.capture="touchstart" @touchend.capture="touchend" @click="skip(index)" v-if="plan.type == 2">
                 <div class="plan-cont-AZ" :style="'background-color:'+getAZ(item.index,true)">{{getAZ(item.index)}}</div>
                 <div class="plan-cont-title ellipsis">{{item.title}}</div>
                 <div class="plan-cont-result">
@@ -35,17 +35,23 @@
             </div>
             <div class="plan-cont-item" v-if="plan.type == 3">
                 <div class="plan-cups">
-                    <img :src="icon.cup" v-for="(item,index) in plan.list" :key="index"/>
-                    <img :src="icon.cupAdd"/>
-                    <img :src="icon.cupEp" v-for="item in plan.empty"/>
+                    <div class="plan-cups-img" v-for="(item,index) in plan.list" :key="index"><img :src="icon.cup"/></div>
+                    <div class="plan-cups-img"><img :src="icon.cupAdd"/></div>
+                    <div class="plan-cups-img" v-for="item in plan.empty" :key="item"><img :src="icon.cupEp"/></div>
                 </div>
             </div>
-            <div class="plan-operat gradient-back dflex-between" v-if="list[index].status">
-                <div class="plan-operat-item">delete</div>
-                <div class="plan-operat-item">active</div>
+            <div class="plan-operat gradient-back dflex-between" v-if="plan.type != 3">
+                <div class="plan-operat-item">
+                    <img :src="icon.delet"/>
+                    <span>delete</span>
+                </div>
+                <div class="plan-operat-item">
+                    <img :src="icon.active"/>
+                    <span>active</span>
+                </div>
             </div>
         </div>
-        <div class="plan-recom dflex-between" v-if="plan.type == 2 || plan.type == 3">
+        <div class="plan-recom dflex-between" v-if="plan.type != 1">
             <div class="plan-recom-real"><span>{{plan.sum}}</span><img :src='icon.warn'/></div>
             <div class="plan-recom-txt">Recommended {{plan.recom}}</div>
         </div>
@@ -67,10 +73,13 @@ export default {
                 warn: require('@/assets/images/icon-12.png'),
                 cup: require('@/assets/images/pic-02.png'),
                 cupAdd: require('@/assets/images/pic-03.png'),
-                cupEp: require('@/assets/images/pic-04.png')
+                cupEp: require('@/assets/images/pic-04.png'),
+                delet: require('@/assets/images/icon-13.png'),
+                active: require('@/assets/images/icon-14.png')
             },
             list: [],
-            touchData: {}
+            clientX: 0,
+            endX: 0,
         }
     },
     created(){
@@ -81,18 +90,46 @@ export default {
         })
     },
     methods: {
-        itemDelet(e,item,index){
-            var str = this.plan.ref +'-'+ index;
-            var status = this.list[index].status;
-            // console.log(this.$refs[str][0]);
-            if(status){
-                this.list[index].status = !status;
-                this.$refs[str][0].style = 'margin-left: 0';
+        skip(index){
+            if( this.checkSlide() ){
+                this.restSlide();
             }else{
-                this.$refs[str][0].style = 'margin-left: -1.7rem';
-                setTimeout(() => {
-                    this.list[index].status = !status;
-                },300)
+                console.log(this.plan);
+                console.log(index);
+            }
+        },
+        touchstart(e){
+            this.startX = e.touches[0].clientX;
+        },
+        touchend(e){
+            let parentElement = e.currentTarget.parentElement;
+            this.endX = e.changedTouches[0].clientX;
+            //左滑
+            if( parentElement.dataset.type == 0 && this.startX - this.endX > 30 ){
+                this.restSlide();
+                parentElement.dataset.type = 1;
+            }
+            // 右滑
+            if( parentElement.dataset.type == 1 && this.startX - this.endX < -30 ){
+                this.restSlide();
+                parentElement.dataset.type = 0;
+            }
+            this.startX = 0;
+            this.endX = 0;
+        },
+        checkSlide(){//判断当前是否有滑块处于滑动状态
+            let listItems = document.querySelectorAll('.plan-cont');
+            for( let i = 0 ; i < listItems.length ; i++){
+                if( listItems[i].dataset.type == 1 ) {
+                    return true;
+                }
+            }
+            return false;
+        },
+        restSlide(){//复位滑动状态
+            let listItems = document.querySelectorAll('.plan-cont');
+            for( let i = 0 ; i < listItems.length ; i++){
+                listItems[i].dataset.type = 0;
             }
         },
         getAZ(index,type){
@@ -104,9 +141,6 @@ export default {
                 return AZ[index];
             }
         },
-        start(e){
-            console.log('start')
-        }
     }
 }
 </script>
@@ -142,11 +176,16 @@ export default {
      height: 0.2rem;
  }
  .plan-cont{
-     overflow: hidden;
+     position: relative;
+     transition: 0.3s;
+ }
+ .plan-cont[data-type="0"]{
+     transform: translate3d(0,0,0);
+ }
+ .plan-cont[data-type="1"]{
+     transform: translate3d(-2rem,0,0);
  }
  .plan-cont-item{
-     float: left;
-     width: 100%;
      text-align: left;
      padding: 0.2rem 0.3rem;
      position: relative;
@@ -232,20 +271,36 @@ export default {
  }
  .plan-cups{
      width: 100%;
-     overflow: hidden;
+     display: flex;
+     align-items: center;
+     justify-content: center;
  }
- .plan-cups img{
+ .plan-cups-img{
+     width: 100%;
+     text-align: center;
+ }
+ .plan-cups-img img{
      width: 0.74rem;
      height: 1.04rem;
-     margin-right: 0.26rem;
  }
  .plan-operat{
-     float: left;
-     width: 1.7rem;
-     height: 2.14rem;
+     width: 2rem;
+     height: 100%;
      font-size: 0.24rem;
+     position: absolute;
+     top: 0;
+     right: -2rem;
  }
  .plan-operat-item{
      width: 100%;
+     line-height: 0.36rem;
+     display: flex;
+     align-items: center;
+     flex-direction: column;
+     justify-content: center;
+ }
+ .plan-operat-item img{
+     width: 0.64rem;
+     height: 0.64rem;
  }
 </style>

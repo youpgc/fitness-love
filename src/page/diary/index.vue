@@ -234,6 +234,7 @@ export default {
     background-image: url('../../assets/images/back-07.png');
   }
   .diary-msg{
+    display: block;
     padding: 0.26rem 0;
     overflow: hidden;
   }
