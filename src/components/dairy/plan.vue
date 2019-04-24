@@ -94,8 +94,7 @@ export default {
             if( this.checkSlide() ){
                 this.restSlide();
             }else{
-                console.log(this.plan);
-                console.log(index);
+                console.log(this.plan,index);
             }
         },
         touchstart(e){
@@ -183,7 +182,7 @@ export default {
      transform: translate3d(0,0,0);
  }
  .plan-cont[data-type="1"]{
-     transform: translate3d(-2rem,0,0);
+     transform: translate3d(-2.6rem,0,0);
  }
  .plan-cont-item{
      text-align: left;
@@ -284,12 +283,12 @@ export default {
      height: 1.04rem;
  }
  .plan-operat{
-     width: 2rem;
+     width: 2.6rem;
      height: 100%;
      font-size: 0.24rem;
      position: absolute;
      top: 0;
-     right: -2rem;
+     right: -2.6rem;
  }
  .plan-operat-item{
      width: 100%;
