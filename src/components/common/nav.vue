@@ -84,6 +84,11 @@ export default {
       if(type == 'water' || type == 'food'){
         this.menu.checked = type;
         this.menu.cut = true;
+      }else if(type == 'exe'){
+        this.$router.push({
+          name: '/plan',
+          path: '/plan'
+        })
       }
     },
     closeCut(){

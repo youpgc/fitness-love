@@ -53,7 +53,6 @@ export default {
             {title: 'Lunch', icon: require('@/assets/images/icon-16.png')},
             {title: 'Dinner', icon: require('@/assets/images/icon-17.png')},
             {title: 'Snack', icon: require('@/assets/images/icon-18.png')},
-
         ]
     };
   },

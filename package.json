@@ -12,7 +12,6 @@
     "dependencies": {
         "@antv/f2": "^3.3.9",
         "axios": "^0.18.0",
-        "echarts": "^4.2.1",
         "mockjs": "^1.0.1-beta3",
         "vue": "^2.5.2",
         "vue-awesome-swiper": "^3.1.3",

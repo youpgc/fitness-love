@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import diaryIndex from '@/page/diary/index'
 import msgIndex from '@/page/diary/message'
+import plan from '@/page/diary/planEdit'
 import exeIndex from '@/page/exercires/index'
 import moreIndex from '@/page/more/index'
 import workIndex from '@/page/workouts/index'
@@ -28,6 +29,10 @@ export default new Router({
         path: '/msgIndex',
         name: 'msgIndex',
         component: msgIndex
+    }, {
+        path: '/plan',
+        name: 'plan',
+        component: plan
     }, {
         path: '/exeIndex',
         name: 'exeIndex',
