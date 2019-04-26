@@ -8,7 +8,7 @@
             <span>{{info.msgIndex}}</span>
           </div>
         </router-link>
-        <div class="diary-data">
+        <router-link to='/mine' class="diary-data">
           <div class="diary-data-portrait">
             <img :src="icon.portrait">
           </div>
@@ -16,7 +16,7 @@
             <div>Hello <span>{{info.username}}</span> ,</div>
             <div>Things look allright.</div>
           </div>
-        </div>
+        </router-link>
         <info-html v-bind:info="infoData"></info-html>
         <schedule-html v-bind:schedule="scheduleData" class="diary-temp"></schedule-html>
         <plan-html v-bind:plan="workout" v-if="workout.show"></plan-html>
@@ -63,7 +63,9 @@ export default {
         msgIndex: '2',
       },
       infoData: {
-        msg: ''
+        goal: 'Gain weight',
+        date: 'Jan 22',
+        weight: '74'
       },
       scheduleData: [
         {calories: '1970', date: 'yesterday', logCal:'', eaten: '1842', burned: '960'},
@@ -219,6 +221,7 @@ export default {
     font-weight: bold;
   }
   .diary-data{
+    display: block;
     width: 100%;
     height: 1rem;
     margin-bottom: 0.48rem;
@@ -243,11 +246,5 @@ export default {
   }
   .diary-data-greeting span{
     font-weight: bold;
-  }
-  .diary-temp{
-    background: #fff;
-    box-shadow: 0 0.1rem 0.4rem 0 rgba(0, 0, 0, 0.2);
-    border-radius: 0.2rem;
-    margin-bottom: 0.3rem;
   }
 </style>

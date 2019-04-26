@@ -4,17 +4,17 @@
     <div class="os">
       <div class="ele-search shadow">
         <div class="ele-search-input">
-          <input type="search" v-model="search" placeholder="Search exercise"/>
+          <router-link to="/exeSearch">Search exercise</router-link>
         </div>
       </div>
       <div class="ele-cont">
         <div class="ele-more">
-          <div class="ele-more-item shadow" v-for="(item,index) in moreList" :key="index">
+          <router-link :to="item.link" class="ele-more-item shadow" v-for="(item,index) in moreList" :key="index">
             <div class="ele-more-img">
               <img :src="item.icon">
             </div>
-            <div class="ele-more-title">{{item.title}}</div>
-          </div>
+            <div class="ele-more-title ellipsis">{{item.title}}</div>
+          </router-link>
         </div>
         <div class="ele-recent shadow">
           <div class="recent-title bbse9">YOUR RENCENT ADDED</div>
@@ -60,10 +60,10 @@ export default {
       },
       search: '',
       moreList: [
-        {title: 'Auto Tracking', icon: require('@/assets/images/more-05.png'), link: ''},
-        {title: 'List of Exercises', icon: require('@/assets/images/more-09.png'), link: ''},
-        {title: 'User\'s Exercises', icon: require('@/assets/images/more-10.png'), link: ''},
-        {title: 'User\'s Workout Plan', icon: require('@/assets/images/more-08.png'), link: ''}
+        {title: 'Auto Tracking', icon: require('@/assets/images/more-05.png'), link: '/'},
+        {title: 'List of Exercises', icon: require('@/assets/images/more-09.png'), link: '/'},
+        {title: 'User\'s Exercises', icon: require('@/assets/images/more-10.png'), link: '/'},
+        {title: 'User\'s Workout Plan', icon: require('@/assets/images/more-08.png'), link: '/'}
       ],
       addList: [
         {title: 'Aerial Hoop', cal: '220 cal', time: '15 mins'},
@@ -99,11 +99,13 @@ export default {
     background-repeat: no-repeat;
     background-size: 0.44rem 0.44rem;
   }
-  .ele-search-input input{
-    width: 100%;
-    height: 100%;
-    padding: 0.2rem 0.1rem;
-    font-size: 0.36rem;
+  .ele-search-input a{
+    display: block;
+    line-height: 0.9rem;
+    padding-left: 0.1rem;
+    color: #888;
+    font-size: 0.26rem;
+    text-align: left;
   }
   .ele-cont{
     height: calc(100% - 1.7rem);
@@ -135,6 +137,7 @@ export default {
   }
   .ele-more-title{
     line-height: 1rem;
+    padding: 0 0.16rem;
     font-size: 0.28rem;
     font-weight: bold;
   }

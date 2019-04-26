@@ -7,19 +7,15 @@
                 <div class="calendar-head-item" v-for="(item,index) in weeks" :key="index">{{item}}</div>
             </div>
             <div class="calendar-table">
-                <div class="calendar-th dflex-between">
-                    <div class="calendar-td">
-                        <span class="active">1</span>
-                        <div class="calendar-tag">
-                            <i></i><i></i><i></i>
+                <div class="calendar-th dflex-between" v-for="(item,index) in table" :key="index">
+                    <div class="calendar-td" v-for="(date,i) in item" :key="i">
+                        <span :class="{'active':date.default}">{{date.day}}</span>
+                        <div class="calendar-tag" v-if="date.default">
+                            <i :style="'background-color:'+color[0]"></i>
+                            <i :style="'background-color:'+color[1]"></i>
+                            <i :style="'background-color:'+color[2]"></i>
                         </div>
                     </div>
-                    <div class="calendar-td"><span>2</span></div>
-                    <div class="calendar-td"><span>3</span></div>
-                    <div class="calendar-td"><span>4</span></div>
-                    <div class="calendar-td"><span>5</span></div>
-                    <div class="calendar-td"><span>6</span></div>
-                    <div class="calendar-td"><span>7</span></div>
                 </div>
             </div>
         </div>
@@ -38,7 +34,7 @@ export default {
       year: 2019,//当前年份
       month: 4,//当前月份
       week: 3,//星期几
-      today: 1,//当前日期
+      today: 25,//当前日期
       firstWeek: 4,//当月首日星期
       hrtnDay: 30,//当月总日数
       table: []
@@ -50,8 +46,6 @@ export default {
   methods: {
     init(){
         var data = new Date();
-        // this.year = 2019;
-        // this.month = 5;
         this.year = data.getFullYear();
         this.month = data.getMonth() + 1;
         var str = data.toString();
@@ -73,24 +67,37 @@ export default {
         var dayIndex = 1;
         var _length = this.hrtnDay+this.firstWeek;
         for(let i=0;i<_length;i++){
-            if(i<this.firstWeek){
-                dayList.push({day: '', default: false, tag: []})
+            var status = false;
+            if(i==this.today+this.firstWeek-1){
+                status = true;
+            }
+            if(i<this.firstWeek){//头部处理
+                dayList.push({day: '', default: status, tag: []})
             }else{
-                dayList.push({day: dayIndex, default: true, tag: []})
+                dayList.push({day: dayIndex, default: status, tag: []})
                 dayIndex ++;
             }
         }
-        // var weekIndex = 5;
-        // for(let i=0;i<weekIndex;i++){
-        //     var arr = [];
-        //     dayList.some((item,index)=>{
-        //         if(index<weekIndex*7){
-        //             return arr.push(item);
-        //         }
-        //     })
-        //     this.table.push(arr);
-        // }
-        // console.log(this.table);
+        var weekIndex = 5;
+        if(_length>35){
+            weekIndex = 6;
+        }
+        for(let i=0;i<weekIndex;i++){
+            var arr = [];
+            for(let x=0;x<dayList.length;x++){
+                if(x > (i * 7 - 1) && x < ((i + 1) * 7)){
+                    arr.push(dayList[x]);
+                }
+            }
+            this.table.push(arr);
+        }
+        //尾部处理
+        var _table = this.table[this.table.length-1]
+        for(let i=0;i<8;i++){
+            if(_table.length<i){
+                _table.push({day: '', default: false, tag: []})
+            }
+        }
     }
   }
 };
@@ -98,7 +105,8 @@ export default {
 
 <style scoped>
     .calendar{
-
+        background: #fff;
+        overflow: hidden;
     }
     .calendar-title{
         height: 1rem;
@@ -112,7 +120,7 @@ export default {
     .calendar-cont{
         width: 100%;
         line-height: 1rem;
-        padding: 0 0.3rem;
+        padding: 0 0.3rem 0.2rem;
         border-spacing: 0;
     }
     .calendar-head{
@@ -124,10 +132,10 @@ export default {
         font-weight: normal;
     }
     .calendar-table{
-
+        overflow: hidden;
     }
     .calendar-th{
-
+        overflow: hidden;
     }
     .calendar-td{
         width: 100%;
@@ -135,6 +143,7 @@ export default {
         position: relative;
     }
     .calendar-td span{
+        font-size: 0.36rem;
         position: absolute;
         left: 50%;
         top: 50%;
@@ -158,10 +167,11 @@ export default {
     }
     .calendar-tag i{
         display: inline-block;
-        width: 0.12rem;
-        height: 0.12rem;
-        margin: 0 0.01rem;
+        width: 0.16rem;
+        height: 0.16rem;
+        margin: 0 0.04rem;
         border-radius: 50%;
         background: #ccc;
+        transform: scale(0.8);
     }
 </style>

@@ -1,15 +1,15 @@
 <template>
     <div class="diary-info diary-temp dflex-between">
         <div class="diary-info-item">
-        <div class="diary-info-label">Your goal</div>
-        <div class="diary-info-blod">Gain weight</div>
+          <div class="diary-info-label">Your goal</div>
+          <div class="diary-info-blod ellipsis">{{info.goal}}</div>
         </div>
         <div class="diary-info-item">
-        <div class="diary-info-label">Latest weight, Jan 22</div>
-        <div class="dflex-between">
-            <div class="diary-info-item f50 tr">74<span class="f32"> kg</span></div>
-            <div class="diary-info-item"><img class="diary-info-trend" :src="trend"></div>
-        </div>
+          <div class="diary-info-label">Latest weight, {{info.date}}</div>
+          <div class="dflex-between">
+              <div class="diary-info-item f50 tr">{{info.weight}}<span class="f32"> kg</span></div>
+              <div class="diary-info-item"><img class="diary-info-trend" :src="trend"></div>
+          </div>
         </div>
     </div>
 </template>
@@ -51,6 +51,7 @@ export default {
   }
   .diary-info-blod{
     line-height: 1rem;
+    padding: 0 0.16rem;
     font-size: 0.5rem;
   }
   .diary-info-trend{

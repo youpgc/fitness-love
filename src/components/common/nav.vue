@@ -86,7 +86,7 @@ export default {
         this.menu.cut = true;
       }else if(type == 'exe'){
         this.$router.push({
-          name: '/plan',
+          name: 'plan',
           path: '/plan'
         })
       }

@@ -1,7 +1,9 @@
 <template>
   <div class="pt88">
     <head-bar v-bind:head="headData"></head-bar>
-    <calendar v-bind:list="calenderData"></calendar>
+    <div class="bf4 heados">
+      <calendar v-bind:list="calenderData" class="shadow"></calendar>
+    </div>
   </div>
 </template>
 <script>

@@ -98,6 +98,11 @@ export default {
   width: 0.42rem;
   height: 0.42rem;
 }
+.icon-msg{
+  display: block;
+  width: 0.4rem;
+  height: 0.48rem;
+}
 .head-frfun {
   position: absolute;
   right: 0;
