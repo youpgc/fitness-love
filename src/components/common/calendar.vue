@@ -1,15 +1,14 @@
 <template>
-  <div>
-    <div class="calendar">
+    <div class="calendar" @touchstart.capture="touchstart" @touchend.capture="touchend">
         <div class="calendar-title">{{months[month-1]}}, {{year}}</div>
         <div class="calendar-cont">
             <div class="calendar-head dflex-between">
                 <div class="calendar-head-item" v-for="(item,index) in weeks" :key="index">{{item}}</div>
             </div>
-            <div class="calendar-table">
+            <div class="calendar-table" :style="'height:'+(0.9*table.length)+'rem'">
                 <div class="calendar-th dflex-between" v-for="(item,index) in table" :key="index">
-                    <div class="calendar-td" v-for="(date,i) in item" :key="i">
-                        <span :class="{'active':date.default}">{{date.day}}</span>
+                    <div class="calendar-td" v-for="(date,i) in item" :key="i" @click="changeView(date)">
+                        <span :class="{'active':date.on, 'today':date.default}">{{date.day}}</span>
                         <div class="calendar-tag" v-if="date.default">
                             <i :style="'background-color:'+color[0]"></i>
                             <i :style="'background-color:'+color[1]"></i>
@@ -20,7 +19,6 @@
             </div>
         </div>
     </div>
-  </div>
 </template>
 <script>
 export default {
@@ -36,18 +34,38 @@ export default {
       week: 3,//星期几
       today: 25,//当前日期
       firstWeek: 4,//当月首日星期
+      weekIndex: 5,//月周期
       hrtnDay: 30,//当月总日数
-      table: []
+      dayList: [],
+      table: [],
+      full: true,
+      propData: {},
+      startY: 0,
+      endY: 0
     };
   },
   created(){
-      this.init();
+      this.initPage();
+      this.propData = {list: this.list}
+  },
+  watch: {
+      dayList: {
+          handler(val, oldVal){
+              
+          },
+          deep: true
+      }
   },
   methods: {
-    init(){
-        var data = new Date();
-        this.year = data.getFullYear();
+    initPage(){
+        this.initDate();
+        this.initList();
+        this.render(this.full);
+    },
+    initDate(){
+        var data= new Date();
         this.month = data.getMonth() + 1;
+        this.year = data.getFullYear();
         var str = data.toString();
         var _str = str.split(" ")[0];
         this.weeks.some((item,index)=>{
@@ -63,6 +81,8 @@ export default {
             case 2: if (this.year % 4 == 0 && this.year % 100 != 0 || this.year % 400 == 0) { this.hrtnDay = 29; } else { this.hrtnDay = 28; }; break;
             default: break;
         }
+    },
+    initList(){
         var dayList = [];
         var dayIndex = 1;
         var _length = this.hrtnDay+this.firstWeek;
@@ -72,32 +92,75 @@ export default {
                 status = true;
             }
             if(i<this.firstWeek){//头部处理
-                dayList.push({day: '', default: status, tag: []})
+                dayList.push({day: '', default: status, tag: [], on: status})
             }else{
-                dayList.push({day: dayIndex, default: status, tag: []})
+                dayList.push({day: dayIndex, default: status, tag: [], on: status})
                 dayIndex ++;
             }
         }
-        var weekIndex = 5;
+        this.dayList = dayList;
         if(_length>35){
-            weekIndex = 6;
+            this.weekIndex = 6;
         }
-        for(let i=0;i<weekIndex;i++){
+        if(_length <= 28){
+            this.weekIndex = 4;
+        }
+    },
+    render(status){
+        var tableArr = [];
+        for(let i=0;i<this.weekIndex;i++){
             var arr = [];
-            for(let x=0;x<dayList.length;x++){
+            for(let x=0;x<this.dayList.length;x++){
                 if(x > (i * 7 - 1) && x < ((i + 1) * 7)){
-                    arr.push(dayList[x]);
+                    arr.push(this.dayList[x]);
                 }
             }
-            this.table.push(arr);
-        }
-        //尾部处理
-        var _table = this.table[this.table.length-1]
-        for(let i=0;i<8;i++){
-            if(_table.length<i){
-                _table.push({day: '', default: false, tag: []})
+            if(status){
+                tableArr.push(arr);
+            }else{
+                arr.some(item=>{
+                    item.on ? tableArr.push(arr) : '';
+                })
             }
         }
+        //尾部处理
+        var _table = tableArr[tableArr.length-1]
+        for(let i=0;i<8;i++){
+            if(_table.length<i){
+                _table.push({day: '', default: false, tag: [], on: false})
+            }
+        }
+        this.table = tableArr;
+        this.$emit('viewStick',this.table.length);
+    },
+    changeView(data){
+        if(data.day){
+            this.dayList.map(item=>{
+                item.day == data.day ? item.on = true : item.on = false;
+            })
+        }
+    },
+    touchstart(e){
+        this.startY = e.touches[0].clientY;
+    },
+    touchend(e){
+        let parentElement = e.currentTarget.parentElement;
+        this.endY = e.changedTouches[0].clientY;
+        //上滑
+        if(this.startY - this.endY > 30 ){
+            this.restSlide(false);
+        }
+        // 下滑
+        if(this.startY - this.endY < -30 ){
+            this.restSlide(true);
+        }
+        this.startY = 0;
+        this.endY = 0;
+    },
+    restSlide(status){
+        this.full = status;
+        this.$emit('viewStick',this.table.length);
+        this.render(this.full);
     }
   }
 };
@@ -109,8 +172,8 @@ export default {
         overflow: hidden;
     }
     .calendar-title{
-        height: 1rem;
-        line-height: 1rem;
+        height: 0.8rem;
+        line-height: 0.8rem;
         padding-left: 0.5rem;
         font-size: 0.6rem;
         font-weight: bold;
@@ -119,7 +182,7 @@ export default {
     }
     .calendar-cont{
         width: 100%;
-        line-height: 1rem;
+        line-height: 0.8rem;
         padding: 0 0.3rem 0.2rem;
         border-spacing: 0;
     }
@@ -133,43 +196,48 @@ export default {
     }
     .calendar-table{
         overflow: hidden;
+        transition: 0.3s;
     }
     .calendar-th{
         overflow: hidden;
     }
     .calendar-td{
         width: 100%;
-        height: 1rem;
+        height: 0.9rem;
         position: relative;
     }
     .calendar-td span{
-        font-size: 0.36rem;
+        width: 0.56rem;
+        height: 0.56rem;
+        line-height: 0.56rem;
+        text-align: center;
+        border-radius: 50%;
+        font-size: 0.3rem;
         position: absolute;
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
     }
+    .today{
+        background: #5ac8fb;
+        color: #fff;
+    }
     .active{
-        width: 0.64rem;
-        height: 0.64rem;
-        line-height: 0.64rem;
-        text-align: center;
-        border-radius: 50%;
         color: #fff;
         background: linear-gradient(left, #ff6649, #ff0776);
     }
     .calendar-tag{
         display: flex;
         position: absolute;
-        bottom: 0;
+        bottom: 0.02rem;
         left: 50%;
         transform: translate(-50%, 0);
     }
     .calendar-tag i{
         display: inline-block;
-        width: 0.16rem;
-        height: 0.16rem;
-        margin: 0 0.04rem;
+        width: 0.12rem;
+        height: 0.12rem;
+        margin: 0 0.03rem;
         border-radius: 50%;
         background: #ccc;
         transform: scale(0.8);

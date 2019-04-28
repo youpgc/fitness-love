@@ -78,7 +78,7 @@ export default {
                 active: require('@/assets/images/icon-14.png')
             },
             list: [],
-            clientX: 0,
+            startX: 0,
             endX: 0,
         }
     },

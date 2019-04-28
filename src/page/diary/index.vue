@@ -2,21 +2,21 @@
   <div class="pb110">
     <div class="navos">
       <div class="diary-cont">
-        <router-link to="/msgIndex" class="diary-msg">
-          <div class="diary-msg-img">
+        <div class="diary-msg">
+          <router-link to="/msgIndex" class="diary-msg-img">
             <img :src="icon.msg">
             <span>{{info.msgIndex}}</span>
-          </div>
-        </router-link>
-        <router-link to='/mine' class="diary-data">
-          <div class="diary-data-portrait">
+          </router-link>
+        </div>
+        <div class="diary-data">
+          <router-link :to="{ name:'mine',params:{'animat': true} }" class="diary-data-portrait">
             <img :src="icon.portrait">
-          </div>
+          </router-link>
           <div class="diary-data-greeting">
             <div>Hello <span>{{info.username}}</span> ,</div>
             <div>Things look allright.</div>
           </div>
-        </router-link>
+        </div>
         <info-html v-bind:info="infoData"></info-html>
         <schedule-html v-bind:schedule="scheduleData" class="diary-temp"></schedule-html>
         <plan-html v-bind:plan="workout" v-if="workout.show"></plan-html>
