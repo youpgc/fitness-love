@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     initPage(){
-        // this.$refs.input.onfocus();
+        this.$refs.input.focus();
     }
   }
 }

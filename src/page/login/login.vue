@@ -7,10 +7,16 @@
           <img :src="logo">
         </div>
         <div class="login-form">
-          <div class="form-item">
+          <div class="form-item" v-if="type">
             <div class="form-label">Email</div>
             <div class="form-input">
               <input type="text" v-model="formData.email" placeholder="Please enter your email address"/>
+            </div>
+          </div>
+          <div class="form-item" v-else>
+            <div class="form-label">Phone</div>
+            <div class="form-input">
+              <input type="text" v-model="formData.phone" placeholder="Please enter your phone number"/>
             </div>
           </div>
           <div class="form-item">
@@ -22,7 +28,8 @@
           <div class="forgot"><router-link to="/forgot">Forgot Password</router-link></div>
           <div class="login-btn gradient-back">LOG IN</div>
           <div class="login-cut">————<span>or</span>————</div>
-          <div class="login-btn bblue">Log in with phone number</div>
+          <div class="login-btn bblue" v-if="type" @click="changeType(false)">Log in with phone number</div>
+          <div class="login-btn bblue" v-else @click="changeType(true)">Log in with Email</div>
           <div class="toRegister">Don't have an account ? <router-link to="/register"> Sign Up</router-link></div>
         </div>
       </div>
@@ -32,6 +39,7 @@
 
 <script>
 import headBar from '@/components/common/head';
+import DB from '@/assets/js/DB';
 
 export default {
   components: {
@@ -45,8 +53,10 @@ export default {
         src: require('@/assets/images/icon-30.png')
       },
       logo: require('@/assets/images/logo.png'),
+      type: true,
       formData: {
         email: '',
+        phone: '',
         pwd: ''
       }
     }
@@ -56,7 +66,11 @@ export default {
   },
   methods: {
     initPage(){
-
+      // console.log(DB)
+    },
+    changeType(status){
+      this.type = status;
+      //表单置空  ...
     }
   }
 }

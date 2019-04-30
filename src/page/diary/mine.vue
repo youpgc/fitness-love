@@ -6,7 +6,7 @@
             <div class="diary-msg">
                 <router-link to="/msgIndex" class="diary-msg-img">
                     <img :src="icon.msg">
-                    <span>2</span>
+                    <span>{{infoData.msgIndex}}</span>
                 </router-link>
             </div>
             <div class="mine-via" :class="{'animat':animat}">
@@ -60,7 +60,8 @@ export default {
                 goal: 'Gain weight',
                 date: 'Jan 22',
                 weight: '74',
-                name: 'Youpgc'
+                name: 'Youpgc',
+                msgIndex: '6'
             },
             menu: [
                 {icon: require('@/assets/images/icon-52.png'), title: 'Upgrade Professional', href: '/', width: '0.48rem', height: '0.64rem', default: true},

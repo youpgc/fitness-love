@@ -59,6 +59,10 @@ export default new Router({
         name: 'register',
         component: href('login', 'register')
     }, {
+        path: '/forgot',
+        name: 'forgot',
+        component: href('login', 'forgot')
+    }, {
         path: '/step1',
         name: 'step1',
         component: href('login', 'step1')

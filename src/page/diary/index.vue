@@ -5,7 +5,7 @@
         <div class="diary-msg">
           <router-link to="/msgIndex" class="diary-msg-img">
             <img :src="icon.msg">
-            <span>{{info.msgIndex}}</span>
+            <span>{{infoData.msgIndex}}</span>
           </router-link>
         </div>
         <div class="diary-data">
@@ -13,7 +13,7 @@
             <img :src="icon.portrait">
           </router-link>
           <div class="diary-data-greeting">
-            <div>Hello <span>{{info.username}}</span> ,</div>
+            <div>Hello <span>{{infoData.username}}</span> ,</div>
             <div>Things look allright.</div>
           </div>
         </div>
@@ -35,7 +35,6 @@
 import navBar from '@/components/common/nav';
 import Swiper from 'swiper';
 import DB from '@/assets/js/DB';
-import axios from 'axios';
 import infoHtml from '@/components/dairy/info';
 import scheduleHtml from '@/components/dairy/schedule';
 import planHtml from '@/components/dairy/plan';
@@ -58,14 +57,12 @@ export default {
         prev: require('@/assets/images/icon-04.png'),
         next: require('@/assets/images/icon-05.png'),
       },
-      info:{
-        username: 'Youpgc',
-        msgIndex: '2',
-      },
       infoData: {
         goal: 'Gain weight',
         date: 'Jan 22',
-        weight: '74'
+        weight: '74',
+        username: 'Youpgc',
+        msgIndex: '6'
       },
       scheduleData: [
         {calories: '1970', date: 'yesterday', logCal:'', eaten: '1842', burned: '960'},
@@ -172,12 +169,31 @@ export default {
   methods: {
     initDB(){
       var dbkey = [
-        {key: 'base', name: 'base', unique: true}
+        {key: 'name', name: 'username', unique: true},
+        {key: 'status', name: 'status', unique: false}
       ]
-      DB.init('customer','data',dbkey);
+      DB.init('base', dbkey);
     },
     initPage(){
+        var _this = this;
+        this.getList()
+    },
+    getList(){
       var _this = this;
+      if(DB.db){
+        DB.get(function(res){
+          if(res.length == 0){
+            _this.$router.push({
+              path: '/login',
+              name: 'login'
+            })
+          }
+        })
+      }else{
+        setTimeout(function(){
+          _this.getList();
+        },10)
+      }
     }
   }
 }

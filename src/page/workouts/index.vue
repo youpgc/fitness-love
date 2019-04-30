@@ -82,11 +82,13 @@ export default {
       onTab: 0,
       stock: [
         {title: 'General Traning', time: '12 Weeks', grade: 'Beginner', image: require('@/assets/images/pic-14.jpg')},
-        {title: 'Jay Cutler\'s 8-Weeks Mass-Building Trainer', time: '8 Weeks', grade: 'Advanced', image: require('@/assets/images/pic-20.jpg')},
+        {title: 'Weider (Chest Special)', time: '12 Weeks', grade: 'Beginner', image: require('@/assets/images/pic-20.jpg')},
+        {title: 'Jay Cutler\'s 8-Weeks Mass-Building Trainer', time: '8 Weeks', grade: 'Advanced', image: require('@/assets/images/pic-16.jpg')},
       ],
       plans: [
-        {title: 'Weider (Chest Special)', time: '12 Weeks', image: require('@/assets/images/pic-16.jpg')},
-        {title: 'Abs Home Workout', time: '8 Weeks', image: require('@/assets/images/pic-17.jpg')},
+        {title: 'Weider (Chest Special)', time: '12 Weeks', image: require('@/assets/images/pic-17.jpg')},
+        {title: 'Abs Home Workout', time: '8 Weeks', image: require('@/assets/images/pic-18.jpg')},
+        {title: 'Jay Cutler\'s 8-Weeks Mass-Building Trainer', time: '8 Weeks', image: require('@/assets/images/pic-19.jpg')},
       ],
     }
   },
@@ -143,7 +145,7 @@ export default {
     border-bottom: 0.04rem solid #ff5e3a;
   }
   .workout-cont{
-    height: calc(100% - 1.1rem);
+    height: calc(100% - 1.02rem);
     overflow: scroll;
   }
   .workout-stock, .workout-plans{
