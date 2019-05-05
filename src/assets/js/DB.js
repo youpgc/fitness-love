@@ -1,12 +1,10 @@
 const DB = {
     db: null,
-    dataIndex: 0,
-    async init(basename, nameObj) {
+    dataIndex: 1,
+    init() {
         var _this = this;
-        var version = 1;
         var objectStore;
-        var request = window.indexedDB.open(basename, version);
-
+        var request = window.indexedDB.open('fitness-love', 1);
         request.onerror = function() {}
         request.onsuccess = function(event) {
                 _this.db = event.target.result;
@@ -15,22 +13,22 @@ const DB = {
         request.onupgradeneeded = function(event) {
             _this.db = event.target.result;
             if (!_this.db.objectStoreNames.contains('data')) { //判断是否存在
-                objectStore = _this.db.createObjectStore('data', { keyPath: 'title' });
+                objectStore = _this.db.createObjectStore('data', { keyPath: 'id' });
                 //新建索引，参数索引名称、索引所在的属性、配置对象
-                if (nameObj && nameObj.length > 0) {
-                    nameObj.map(item => {
-                        objectStore.createIndex(item.key, item.name, { unique: item.unique || false });
-                    })
-                }
+                objectStore.createIndex('title', 'title', { unique: false });
+                objectStore.createIndex('phone', 'phone', { unique: false });
+                objectStore.createIndex('email', 'email', { unique: false });
             }
         }
     },
     add(data, sure, nosure) { //新增数据
+        data['id'] = this.dataIndex;
         var request = this.db.transaction(['data'], 'readwrite')
             .objectStore('data')
             .add(data);
         request.onsuccess = function(event) {
             sure(event.target.result)
+            this.dataIndex++;
         };
         request.onerror = function(event) {
             nosure(event.target.result)
@@ -49,33 +47,39 @@ const DB = {
     },
     get(sure) { //获取所有数据
         var objectStore = this.db.transaction('data').objectStore('data');
-        var arr = [];
+        var type = true;
         objectStore.openCursor().onsuccess = function(event) {
             var cursor = event.target.result;
             if (cursor) {
                 var data = cursor.value;
-                arr.push(data);
-                this.dataIndex = cursor.key + 1;
+                sure(data);
+                type = false;
                 cursor.continue(); //将光标移到下一个对象,若是当前对象是最后一个数据,则指向null
             } else {
-                // console.log('没有数据了')
+                if (type) {
+                    sure([])
+                }
             }
         };
-        sure(arr)
+
     },
-    getItem(nameIndex, value) { //精确查找
+    getItem(nameIndex, value, sure) { //精确查找
         var transaction = this.db.transaction(['data'], 'readonly');
         var store = transaction.objectStore('data');
         var index = store.index(nameIndex);
         var request = index.openCursor(IDBKeyRange.only(value));
+        var type = true;
         request.onsuccess = function(e) {
             var cursor = e.target.result;
             if (cursor) {
                 var data = cursor.value;
-                console.log(data)
+                sure(data);
+                type = false;
                 cursor.continue();
             } else {
-                console.log(cursor)
+                if (type) {
+                    sure([])
+                }
             }
         }
     },

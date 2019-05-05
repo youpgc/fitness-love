@@ -26,11 +26,11 @@
             </div>
           </div>
           <div class="forgot"><router-link to="/forgot">Forgot Password</router-link></div>
-          <div class="login-btn gradient-back">LOG IN</div>
+          <div class="login-btn gradient-back" @click="login()">LOG IN</div>
           <div class="login-cut">————<span>or</span>————</div>
           <div class="login-btn bblue" v-if="type" @click="changeType(false)">Log in with phone number</div>
           <div class="login-btn bblue" v-else @click="changeType(true)">Log in with Email</div>
-          <div class="toRegister">Don't have an account ? <router-link to="/register"> Sign Up</router-link></div>
+          <div class="toRegister">Don't have an account ? <router-link :to="{ name:'register', params:{'status': true} }"> Sign Up</router-link></div>
         </div>
       </div>
     </div>
@@ -39,7 +39,6 @@
 
 <script>
 import headBar from '@/components/common/head';
-import DB from '@/assets/js/DB';
 
 export default {
   components: {
@@ -62,15 +61,74 @@ export default {
     }
   },
   created(){
+    var param = this.$route.params;
+    if(param.status){
+        this.headdata.src = '';
+    }
+  },
+  mounted(){
     this.initPage();
   },
   methods: {
     initPage(){
-      // console.log(DB)
+      if(!this.DB.db){
+        this.DB.init();
+      }
+    },
+    login(){
+      var msg = '';
+      var regPhone = /^1(3|4|5|7|8)\d{9}$/;
+      var regEmail = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/; 
+      if(this.type && this.formData.email.length==0){
+        msg = 'Please enter your email address';
+      }else if(this.type && this.formData.email.length>0 && !regEmail.test(this.formData.email)){
+        msg = 'Please enter the correct email address';
+      }else if(!this.type && this.formData.phone.length==0){
+        msg = 'Please enter your phone number';
+      }else if(!this.type && this.formData.phone.length>0 && !regPhone.test(this.formData.phone)){
+        msg = 'Please enter the correct phone number';
+      }else if(this.formData.pwd.length==0){
+        msg = 'Please enter your password';
+      }
+      if(msg.length>0){
+        this.$toast(msg);
+      }else{
+        this.saveLog();
+      }
+    },
+    saveLog(){
+      var _this = this;
+      var member = 'email', pwd = _this.formData.email;
+      if(_this.formData.email.length == 0 && _this.formData.phone.length>0){
+        member = 'phone', pwd = _this.formData.phone;
+      }
+      _this.DB.getItem(member, pwd, function(res){
+        if(res.password && res.password == _this.formData.pwd){
+          var data = res;
+          data['title'] = 'login';
+          data['status'] = true;
+          _this.DB.add(data, function(res){
+            _this.$toast('Login successfully');
+            setTimeout(()=>{
+              _this.$router.push({
+                name: 'diaryIndex',
+                path: '/'
+              })
+            },1500)
+          },function(res){
+            _this.$toast('login failure');
+          })
+        }else{
+          _this.$toast('Wrong account or password');
+        }
+      })
+      
     },
     changeType(status){
       this.type = status;
-      //表单置空  ...
+      for(let key in this.formData){
+        this.formData[key] = '';
+      }
     }
   }
 }

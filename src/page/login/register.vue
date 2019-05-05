@@ -6,13 +6,20 @@
         <div class="register-logo">
           <img :src="logo">
         </div>
-        <div class="register-btn register-phone">Sign up with phone number</div>
-        <div class="register-cut">————<span>or</span>————</div>
+        <div class="register-btn register-phone" @click="changeType(false)" v-if="type">Sign up with phone number</div>
+        <div class="register-btn register-phone" @click="changeType(true)" v-else>Sign up with Email</div>
+        <div class="register-cut">————<span>or</span>————</div> 
         <div class="register-form">
-          <div class="form-item">
+          <div class="form-item" v-if="type">
             <div class="form-label">Email</div>
             <div class="form-input">
               <input type="text" v-model="formData.email" placeholder="Please enter your email address"/>
+            </div>
+          </div>
+          <div class="form-item" v-else>
+            <div class="form-label">Phone number</div>
+            <div class="form-input">
+              <input type="text" v-model="formData.phone" placeholder="Please enter your phone number"/>
             </div>
           </div>
           <div class="form-item">
@@ -29,7 +36,7 @@
           </div>
           <div class="register-btn gradient-back" @click="toResit()">SIGN UP</div>
         </div>
-        <div class="toLogin">Already have an account ? <router-link to="/login"> Log In</router-link></div>
+        <div class="toLogin">Already have an account ? <router-link :to="{name:'login', params:{status: true}}"> Log In</router-link></div>
       </div>
     </div>
   </div>
@@ -51,7 +58,8 @@ export default {
         src: require('@/assets/images/icon-30.png')
       },
       logo: require('@/assets/images/logo.png'),
-      formData:{
+      type: true,
+      formData: {
         email: '',
         phone: '',
         pwd: '',
@@ -60,17 +68,75 @@ export default {
     }
   },
   created(){
+    var param = this.$route.params;
+    if(param.status){
+        this.headdata.src = '';
+    }
     this.initPage();
   },
   methods: {
     initPage(){
-
+      if(!this.DB.db){
+        this.DB.init();
+      }
+    },
+    changeType(status){
+      this.type = status;
+      for(let key in this.formData){
+        this.formData[key] = '';
+      }
     },
     toResit(){
-      this.$router.push({
-        path: '/step1',
-        name: 'step1'
-      });
+      var msg = '';
+      var regPhone = /^1(3|4|5|7|8)\d{9}$/;
+      var regEmail = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/; 
+      if(this.type && this.formData.email.length==0){
+        msg = 'Please enter your email address';
+      }else if(this.type && this.formData.email.length>0 && !regEmail.test(this.formData.email)){
+        msg = 'Please enter the correct email address';
+      }else if(!this.type && this.formData.phone.length==0){
+        msg = 'Please enter your phone number';
+      }else if(!this.type && this.formData.phone.length>0 && !regPhone.test(this.formData.phone)){
+        msg = 'Please enter the correct phone number';
+      }else if(this.formData.pwd.length==0){
+        msg = 'Please enter your password';
+      }else if(this.formData.cfPwd.length==0){
+        msg = 'Please confirm your password';
+      }else if(this.formData.cfPwd !== this.formData.pwd){
+        msg = 'The passwords do not match';
+      }
+      if(msg.length>0){
+        this.$toast(msg)
+      }else{
+        this.saveLog();
+      }
+    },
+    saveLog(){
+      var _this = this;
+      var data = {
+        title: 'info', 
+        email: _this.formData.email, 
+        password: _this.formData.pwd, 
+        phone: _this.formData.phone
+      }
+      _this.DB.add(data, function(res){
+        data['id'] = res;
+        _this.$toast('registered successfully');
+
+
+        //新增title = 'register';
+
+        
+        setTimeout(()=>{
+          _this.$router.push({
+            path: '/step1',
+            name: 'step1',
+            params: data
+          });
+        },1500)
+      },function(res){
+        _this.$toast('fail to sign in')
+      })
     }
   }
 }

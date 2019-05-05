@@ -34,7 +34,6 @@
 <script>
 import navBar from '@/components/common/nav';
 import Swiper from 'swiper';
-import DB from '@/assets/js/DB';
 import infoHtml from '@/components/dairy/info';
 import scheduleHtml from '@/components/dairy/schedule';
 import planHtml from '@/components/dairy/plan';
@@ -168,31 +167,38 @@ export default {
   },
   methods: {
     initDB(){
-      var dbkey = [
-        {key: 'name', name: 'username', unique: true},
-        {key: 'status', name: 'status', unique: false}
-      ]
-      DB.init('base', dbkey);
+      this.DB.init();
     },
     initPage(){
-        var _this = this;
-        this.getList()
+      var _this = this;
+      if(_this.DB.db){
+        _this.getList();
+      }else{
+        setTimeout(()=>{
+          _this.initPage();
+        },100)
+      }
     },
     getList(){
       var _this = this;
-      if(DB.db){
-        DB.get(function(res){
-          if(res.length == 0){
-            _this.$router.push({
-              path: '/login',
-              name: 'login'
-            })
-          }
-        })
-      }else{
-        setTimeout(function(){
-          _this.getList();
-        },10)
+      var loginStatus = false;
+      _this.DB.get(function(res){
+        if(res.id){
+          _this.DB.dataIndex = res.id + 1;
+        }
+        if(res.title == 'login' && res.status){
+          loginStatus = true;
+        }
+      })
+      if(!loginStatus){
+        _this.$toast('login failure')
+        setTimeout(()=>{
+          _this.$router.push({
+            path: '/login',
+            name: 'login',
+            params: {status: true}
+          })
+        },1500)
       }
     }
   }

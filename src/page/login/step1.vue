@@ -43,7 +43,7 @@ export default {
     return {
       headdata: {
         text: '',
-        src: require('@/assets/images/icon-30.png'),
+        // src: require('@/assets/images/icon-30.png'),
         span: 'SKIP'
       },
       formData: {
@@ -55,11 +55,20 @@ export default {
     }
   },
   created(){
+    //判断参数 或取DB缓存
+
+    
+    var data = this.$route.params;
+    for(let key in data){
+      this.formData[key] = data[key];
+    }
     this.initPage();
   },
   methods: {
     initPage(){
-
+      if(!this.DB.db){
+        this.DB.init();
+      }
     },
     skip(){
       console.log('skip');
@@ -73,10 +82,21 @@ export default {
       }
     },
     nextStep(){
-      this.$router.push({
-        path: '/step2',
-        name: 'step2'
-      })
+      var msg = '';
+      if(this.formData.name.length==0){
+        msg = 'Please enter your name'
+      }else if(this.formData.age.length==0){
+        msg = 'Please enter your age'
+      }
+      if(msg.length>0){
+        this.$toast(msg);
+      }else{
+          this.$router.push({
+            path: '/step2',
+            name: 'step2',
+            params: this.formData
+          })
+      }
     }
   }
 }
