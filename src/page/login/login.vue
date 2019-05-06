@@ -49,7 +49,7 @@ export default {
     return {
       headdata: {
         text: 'Log In',
-        src: require('@/assets/images/icon-30.png')
+        // src: require('@/assets/images/icon-30.png')
       },
       logo: require('@/assets/images/logo.png'),
       type: true,
@@ -61,10 +61,10 @@ export default {
     }
   },
   created(){
-    var param = this.$route.params;
-    if(param.status){
-        this.headdata.src = '';
-    }
+    // var param = this.$route.params;
+    // if(param.status){
+    //     this.headdata.src = '';
+    // }
   },
   mounted(){
     this.initPage();
@@ -107,7 +107,7 @@ export default {
           var data = res;
           data['title'] = 'login';
           data['status'] = true;
-          _this.DB.add(data, function(res){
+          _this.DB.put(data, function(res){
             _this.$toast('Login successfully');
             setTimeout(()=>{
               _this.$router.push({

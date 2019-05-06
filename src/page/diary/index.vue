@@ -182,24 +182,28 @@ export default {
     getList(){
       var _this = this;
       var loginStatus = false;
-      _this.DB.get(function(res){
-        if(res.id){
-          _this.DB.dataIndex = res.id + 1;
-        }
-        if(res.title == 'login' && res.status){
-          loginStatus = true;
+      new Promise((resolve, reject)=>{
+        _this.DB.get(function(res){
+          if(res.id){
+            _this.DB.dataIndex = res.id + 1;
+          }
+          if(res.title == "login" && res.status){
+            loginStatus = true;
+          }
+          resolve()
+        })
+      }).then((res)=>{
+        if(!loginStatus){
+          _this.$toast('login failure')
+          setTimeout(()=>{
+            _this.$router.push({
+              path: '/login',
+              name: 'login',
+              params: {status: true}
+            })
+          },1500)
         }
       })
-      if(!loginStatus){
-        _this.$toast('login failure')
-        setTimeout(()=>{
-          _this.$router.push({
-            path: '/login',
-            name: 'login',
-            params: {status: true}
-          })
-        },1500)
-      }
     }
   }
 }

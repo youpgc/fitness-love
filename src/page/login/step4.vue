@@ -62,10 +62,25 @@ export default {
       this.frequency = this.active[index].title;
     },
     nextStep(){
-      this.$router.push({
-        path: '/step5',
-        name: 'step5'
-      })
+      var _this = this;
+      var msg = '';
+      if(_this.frequency.length==0){
+        msg = 'Please select your active index'
+      }
+      if(msg.length>0){
+        _this.$toast(msg)
+      }else{
+        var data = _this.$route.params;
+        data['active'] = _this.frequency;
+        data['step'] = 4;
+        _this.DB.put(data, function(res){
+          _this.$router.push({
+            path: '/step5',
+            name: 'step5',
+            params: data
+          })
+        })
+      }
     }
   }
 }

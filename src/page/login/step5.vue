@@ -71,10 +71,29 @@ export default {
       }
     },
     nextStep(){
-      this.$router.push({
-        path: '/step6',
-        name: 'step6'
-      })
+      var _this = this;
+      var msg = '';
+      if(this.formData.tall.length==0){
+        msg = 'Please enter your tall';
+      }else if(this.formData.weight==0){
+        msg = 'Please enter your currently weight';
+      }
+      if(msg.length>0){
+        _this.$toast(msg);
+      }else{
+        var data = _this.$route.params;
+        data['tall'] = _this.formData.tall;
+        data['currently_weight'] = _this.formData.weight;
+        data['tall_unit'] = _this.formData.size;
+        data['step'] = 5;
+        _this.DB.put(data, function(res){
+          _this.$router.push({
+            path: '/step6',
+            name: 'step6',
+            params: data
+          })
+        })
+      }
     }
   }
 }

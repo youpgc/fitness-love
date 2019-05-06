@@ -5,7 +5,9 @@
       <div class="step-cont">
         <div class="step-title">Step 1/5</div>
         <div class="step-label">Hi! What your name ?</div>
-        <div class="step-camera"></div>
+        <div class="step-camera" :style="'background-image:url('+formData.via+')'">
+          <input type="file" @change='addVia($event)' capture="camera" multiple="false" accept="image/*"/>
+        </div>
         <div class="step-form">
           <div class="form-item">
             <div class="form-label">Your Name</div>
@@ -43,10 +45,11 @@ export default {
     return {
       headdata: {
         text: '',
-        // src: require('@/assets/images/icon-30.png'),
         span: 'SKIP'
       },
+      default: require('@/assets/images/icon-58.png'),
       formData: {
+        via: require('@/assets/images/icon-58.png'),
         name: '',
         age: '',
         sex: 'MALE',
@@ -55,13 +58,11 @@ export default {
     }
   },
   created(){
-    //判断参数 或取DB缓存
-
-    
     var data = this.$route.params;
     for(let key in data){
       this.formData[key] = data[key];
     }
+    this.formData['step'] = 1;
     this.initPage();
   },
   methods: {
@@ -73,6 +74,41 @@ export default {
     skip(){
       console.log('skip');
     },
+    addVia(el){
+      var _this = this;
+      var file = el.target.files[0];
+      if(file){
+          var type = file.type.split('/')[0];
+          if(type && type === 'image'){
+              _this.formData.via = getFileURL(file)
+          }
+      }else{
+        _this.formData.via = _this.default;
+      }
+      function getFileURL(file) {
+        var getUrl = null;
+        if(window.createObjectURL != undefined) { // basic
+            getUrl = window.createObjectURL(file);
+        } else if(window.URL != undefined) { // mozilla(firefox)
+            getUrl = window.URL.createObjectURL(file);
+        } else if(window.webkitURL != undefined) { // webkit or chrome
+            getUrl = window.webkitURL.createObjectURL(file);
+        }
+        return getUrl;
+      }
+    },
+    // dataURItoBlob (dataURI) {
+    //     // base64 解码
+    //     let byteString = window.atob(dataURI.split(',')[1]);
+    //     let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    //     let T = mimeString.split('/')[1];
+    //     let ab = new ArrayBuffer(byteString.length);
+    //     let ia = new Uint8Array(ab);
+    //     for (let i = 0; i < byteString.length; i++) {
+    //         ia[i] = byteString.charCodeAt(i);
+    //     }
+    //     return new Blob([ab], {type: mimeString});
+    // },
     changeSex(){
       this.sex = !this.sex;
       if(this.sex){
@@ -82,19 +118,22 @@ export default {
       }
     },
     nextStep(){
+      var _this = this;
       var msg = '';
-      if(this.formData.name.length==0){
+      if(_this.formData.name.length==0){
         msg = 'Please enter your name'
-      }else if(this.formData.age.length==0){
+      }else if(_this.formData.age.length==0){
         msg = 'Please enter your age'
       }
       if(msg.length>0){
-        this.$toast(msg);
+        _this.$toast(msg);
       }else{
-          this.$router.push({
-            path: '/step2',
-            name: 'step2',
-            params: this.formData
+          _this.DB.put(_this.formData, function(res){
+            _this.$router.push({
+              path: '/step2',
+              name: 'step2',
+              params: _this.formData
+            })
           })
       }
     }
@@ -111,7 +150,6 @@ export default {
   background-position: center;
   background-repeat: no-repeat;
   background-size: 100%;
-  background-image: url('../../assets/images/icon-58.png');
   margin: 0.8rem auto 0;
 }
 .step-form{
@@ -173,5 +211,10 @@ export default {
 }
 .step-btn-act{
   left: calc(50% + 0.04rem);
+}
+.step-camera input{
+  width: 100%;
+  height: 100%;
+  opacity: 0;
 }
 </style>

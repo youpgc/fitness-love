@@ -9,7 +9,7 @@
           <div class="form-item">
             <div class="form-label">Your Goal ({{unit.title}})</div>
             <div class="form-input">
-              <input type="text" placeholder="please enter your goal">
+              <input type="text" v-model="formData.goal" placeholder="please enter your goal">
             </div>
           </div>
           <div class="step-type">
@@ -42,6 +42,7 @@ export default {
       },
       formData: {
           unit: 'KILOGRAMS',
+          goal: ''
       },
       unit: {
           index: 0,
@@ -73,10 +74,26 @@ export default {
         }
     },
     nextStep(){
-      this.$router.push({
-        path: '/step4',
-        name: 'step4'
-      })
+      var _this = this;
+      var msg = '';
+      if(_this.formData.goal.length==0){
+        msg = 'Please enter your goal'
+      }
+      if(msg.length>0){
+        _this.$toast(msg);
+      }else{
+        var data = _this.$route.params;
+        data['goal'] = _this.formData.goal;
+        data['goal_unit'] = _this.unit.title;
+        data['step'] = 3;
+        _this.DB.put(data, function(res){
+          _this.$router.push({
+            path: '/step4',
+            name: 'step4',
+            params: data
+          })
+        })
+      }
     }
   }
 }

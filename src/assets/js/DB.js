@@ -61,7 +61,6 @@ const DB = {
                 }
             }
         };
-
     },
     getItem(nameIndex, value, sure) { //精确查找
         var transaction = this.db.transaction(['data'], 'readonly');

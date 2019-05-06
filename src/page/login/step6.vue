@@ -39,8 +39,9 @@ export default {
     return {
       headdata: {
         text: '',
-        src: require('@/assets/images/icon-30.png')
+        src: require('@/assets/images/icon-30.png'),
       },
+      info: {},
       scales: {
         scale1: '0.0',
         scale2: '0.2',
@@ -51,11 +52,13 @@ export default {
     }
   },
   created(){
+    var data = this.$route.params;
+    this.info = data;
     this.initPage();
   },
   methods: {
     initPage(){
-
+      console.log(this.info)
     },
     nextStep(){
       this.$router.push({
@@ -108,7 +111,7 @@ export default {
     position: absolute;
     width: 0.05rem;
     height: 0.9rem;
-    bottom: -0.9rem;
+    bottom: -0.91rem;
     left: 50%;
     transform: translate(-50%,0);
     background: #ff5e3a;

@@ -37,6 +37,7 @@ export default {
         src: require('@/assets/images/icon-30.png'),
         span: 'SKIP'
       },
+      formData: { muscle: 'Build Muscle'},
       swiperOption: {
             initialSlide: 0,
             navigation: {
@@ -47,44 +48,53 @@ export default {
             },
             on: {
                 touchStart: function(){
-                if(this.realIndex != 0 && this.realIndex != 2){
-                    this.allowSlidePrev = true;
-                    this.allowSlideNext = true;
-                }else if(this.realIndex == 0){
-                    this.allowSlidePrev = false;
-                }else if(this.realIndex == 2){
-                    this.allowSlideNext = false;
-                }
+                  if(this.realIndex != 0 && this.realIndex != 2){
+                      this.allowSlidePrev = true;
+                      this.allowSlideNext = true;
+                  }else if(this.realIndex == 0){
+                      this.allowSlidePrev = false;
+                  }else if(this.realIndex == 2){
+                      this.allowSlideNext = false;
+                  }
                 },
                 slideChange: function(){
-                    // _this.swiperIndex = this.realIndex;
+                    
                 },
                 slideTo: function(index){
-                this.slideTo(index);
+                  this.slideTo(index);
                 }
             }
       },
       goals: [
           {title: 'Build Muscle', url: require('@/assets/images/back-06.png')},
-          {title: 'Build Muscle', url: require('@/assets/images/back-06.png')},
-          {title: 'Build Muscle', url: require('@/assets/images/back-06.png')}
+          {title: 'Lose Fat', url: require('@/assets/images/back-06.png')},
+          {title: 'Body Building', url: require('@/assets/images/back-06.png')}
       ],
     }
   },
   created(){
+    var data = this.$route.params;
+    for(let key in data){
+      this.formData[key] = data[key];
+    }
+    this.formData['step'] = 2;
     this.initPage();
   },
   methods: {
     initPage(){
-
+      
     },
     skip(){
       console.log('skip');
     },
     nextStep(){
-      this.$router.push({
-        path: '/step3',
-        name: 'step3'
+      var _this = this;
+      _this.DB.put(_this.formData, function(res){
+        _this.$router.push({
+          path: '/step3',
+          name: 'step3',
+          params: _this.formData
+        })
       })
     }
   }

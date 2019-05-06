@@ -55,7 +55,7 @@ export default {
       msg: 'register',
       headdata: {
         text: 'Sign Up',
-        src: require('@/assets/images/icon-30.png')
+        // src: require('@/assets/images/icon-30.png')
       },
       logo: require('@/assets/images/logo.png'),
       type: true,
@@ -68,10 +68,10 @@ export default {
     }
   },
   created(){
-    var param = this.$route.params;
-    if(param.status){
-        this.headdata.src = '';
-    }
+    // var param = this.$route.params;
+    // if(param.status){
+    //     this.headdata.src = '';
+    // }
     this.initPage();
   },
   methods: {
@@ -114,7 +114,7 @@ export default {
     saveLog(){
       var _this = this;
       var data = {
-        title: 'info', 
+        title: 'register', 
         email: _this.formData.email, 
         password: _this.formData.pwd, 
         phone: _this.formData.phone
@@ -122,11 +122,6 @@ export default {
       _this.DB.add(data, function(res){
         data['id'] = res;
         _this.$toast('registered successfully');
-
-
-        //新增title = 'register';
-
-        
         setTimeout(()=>{
           _this.$router.push({
             path: '/step1',
