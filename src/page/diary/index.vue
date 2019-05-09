@@ -48,6 +48,7 @@ export default {
   name: 'diaryIndex',
   data () {
     return {
+      loading: true,
       icon: {
         back: require('@/assets/images/back-07.png'),
         msg: require('@/assets/images/icon-02.png'),
@@ -56,8 +57,10 @@ export default {
         prev: require('@/assets/images/icon-04.png'),
         next: require('@/assets/images/icon-05.png'),
       },
+      months:['Jan','Feb', 'Mar', 'Apr', 'May','Jun', 'Jul', 'Aug','Sep', 'Oct', 'Nov', 'Dec'],
+      localData: {},
       infoData: {
-        goal: 'Gain weight',
+        muscle: 'Gain weight',
         date: 'Jan 22',
         weight: '74',
         username: 'Youpgc',
@@ -160,7 +163,10 @@ export default {
     }
   },
   created(){
+    this.$loading.show();
+    this.localData = window.localStorage;
     this.initDB();
+    this.infoData.date = this.months[new Date().getMonth()]+' '+new Date().getDay();
   },
   mounted(){
     this.initPage();
@@ -189,12 +195,19 @@ export default {
           }
           if(res.title == "login" && res.status){
             loginStatus = true;
+            res['msgIndex'] = 6;
+            var data = JSON.stringify(res);
+            window.localStorage.setItem('infoData',data);
+            for(let key in res){
+              _this.infoData[key] = res[key];
+            }
           }
           resolve()
         })
       }).then((res)=>{
         if(!loginStatus){
-          _this.$toast('login failure')
+          _this.$toast('login failure');
+          window.localStorage.clear();
           setTimeout(()=>{
             _this.$router.push({
               path: '/login',
@@ -203,7 +216,14 @@ export default {
             })
           },1500)
         }
+        _this.getViaImg();
+        _this.$loading.hide()
       })
+    },
+    getViaImg(){
+      var _this = this;
+      var blob = _this.infoData.viaBlob;
+      _this.icon.portrait = _this.tool.getFileURL(blob);
     }
   }
 }

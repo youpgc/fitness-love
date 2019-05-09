@@ -54,8 +54,7 @@ export default {
     return {
       msg: 'register',
       headdata: {
-        text: 'Sign Up',
-        // src: require('@/assets/images/icon-30.png')
+        text: 'Sign Up'
       },
       logo: require('@/assets/images/logo.png'),
       type: true,
@@ -68,10 +67,6 @@ export default {
     }
   },
   created(){
-    // var param = this.$route.params;
-    // if(param.status){
-    //     this.headdata.src = '';
-    // }
     this.initPage();
   },
   methods: {

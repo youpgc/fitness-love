@@ -48,8 +48,7 @@ export default {
   data () {
     return {
       headdata: {
-        text: 'Log In',
-        // src: require('@/assets/images/icon-30.png')
+        text: 'Log In'
       },
       logo: require('@/assets/images/logo.png'),
       type: true,
@@ -59,12 +58,6 @@ export default {
         pwd: ''
       }
     }
-  },
-  created(){
-    // var param = this.$route.params;
-    // if(param.status){
-    //     this.headdata.src = '';
-    // }
   },
   mounted(){
     this.initPage();

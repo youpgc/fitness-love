@@ -1,22 +1,28 @@
-import vue from 'vue';
+import LoadingComponent from '../../components/tool/loading'
 
-import loading from '../../components/tool/loading'
+const loading = {}
 
-const LoadingConstructor = vue.extend(loading)
-
-function showLoading(type = true) {
-    const loadingDom = new LoadingConstructor({
-        el: document.createElement('div'),
-        data() {
-            return {
-                show: type
+loading.install = function(Vue) {
+    Vue.prototype.$loading = {};
+    Vue.prototype.$loading.show = (config) => {
+        const LoadingConstructor = Vue.extend(LoadingComponent)
+        const instance = new LoadingConstructor()
+        document.body.appendChild(instance.$mount().$el)
+        if (config) {
+            instance.text = config.text
+            instance.type = true
+            if (config.size) {
+                instance.size = config.size
+            } else {
+                instance.size = 36;
             }
         }
-    })
-    document.body.appendChild(loadingDom.$el)
+    }
+    Vue.prototype.$loading.hide = () => {
+        var loadingDiv = document.querySelector('#loading');
+        if (loadingDiv) {
+            document.body.removeChild(loadingDiv)
+        }
+    }
 }
-
-function regLoading() {
-    vue.prototype.$loading = showLoading
-}
-export default regLoading;
+export default loading;

@@ -5,7 +5,7 @@
       <div class="step-cont">
         <div class="step-title">Step 1/5</div>
         <div class="step-label">Hi! What your name ?</div>
-        <div class="step-camera" :style="'background-image:url('+formData.via+')'">
+        <div class="step-camera" :style="'background-image:url('+formData.via+')'"><!-- defaultVia -->
           <input type="file" @change='addVia($event)' capture="camera" multiple="false" accept="image/*"/>
         </div>
         <div class="step-form">
@@ -47,9 +47,10 @@ export default {
         text: '',
         span: 'SKIP'
       },
-      default: require('@/assets/images/icon-58.png'),
+      defaultVia: require('@/assets/images/icon-58.png'),
       formData: {
         via: require('@/assets/images/icon-58.png'),
+        viaBlob: '',
         name: '',
         age: '',
         sex: 'MALE',
@@ -78,37 +79,18 @@ export default {
       var _this = this;
       var file = el.target.files[0];
       if(file){
-          var type = file.type.split('/')[0];
-          if(type && type === 'image'){
-              _this.formData.via = getFileURL(file)
-          }
+            var r = new FileReader();
+            r.readAsDataURL(file)
+            r.onload = function(e){
+              var base64 = e.target.result;
+              _this.formData.viaBlob = _this.tool.dataURItoBlob(base64);
+              _this.formData.via = _this.tool.getFileURL(_this.tool.dataURItoBlob(base64));
+            }
       }else{
-        _this.formData.via = _this.default;
+        _this.formData.via = _this.defaultVia;
+        _this.formData.viaBlob = '';
       }
-      function getFileURL(file) {
-        var getUrl = null;
-        if(window.createObjectURL != undefined) { // basic
-            getUrl = window.createObjectURL(file);
-        } else if(window.URL != undefined) { // mozilla(firefox)
-            getUrl = window.URL.createObjectURL(file);
-        } else if(window.webkitURL != undefined) { // webkit or chrome
-            getUrl = window.webkitURL.createObjectURL(file);
-        }
-        return getUrl;
-      }
     },
-    // dataURItoBlob (dataURI) {
-    //     // base64 解码
-    //     let byteString = window.atob(dataURI.split(',')[1]);
-    //     let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-    //     let T = mimeString.split('/')[1];
-    //     let ab = new ArrayBuffer(byteString.length);
-    //     let ia = new Uint8Array(ab);
-    //     for (let i = 0; i < byteString.length; i++) {
-    //         ia[i] = byteString.charCodeAt(i);
-    //     }
-    //     return new Blob([ab], {type: mimeString});
-    // },
     changeSex(){
       this.sex = !this.sex;
       if(this.sex){
@@ -120,7 +102,9 @@ export default {
     nextStep(){
       var _this = this;
       var msg = '';
-      if(_this.formData.name.length==0){
+      if(_this.formData.viaBlob==''){
+        msg = 'Please select your head portrait'
+      }else if(_this.formData.name.length==0){
         msg = 'Please enter your name'
       }else if(_this.formData.age.length==0){
         msg = 'Please enter your age'
@@ -128,7 +112,9 @@ export default {
       if(msg.length>0){
         _this.$toast(msg);
       }else{
-          _this.DB.put(_this.formData, function(res){
+        var data = _this.formData;
+        delete data['via'];
+          _this.DB.put(data, function(res){
             _this.$router.push({
               path: '/step2',
               name: 'step2',

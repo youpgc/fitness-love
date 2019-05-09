@@ -78,6 +78,8 @@ export default {
         if(param.animat){
             this.animat = true;
         }
+        var data = JSON.parse(window.localStorage.getItem('infoData'));
+        this.infoData = data;
     },
     mounted(){
         this.init();

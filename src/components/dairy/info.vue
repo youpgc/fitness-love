@@ -2,12 +2,12 @@
     <div class="diary-info diary-temp dflex-between">
         <div class="diary-info-item">
           <div class="diary-info-label">Your goal</div>
-          <div class="diary-info-blod ellipsis">{{info.goal}}</div>
+          <div class="diary-info-blod ellipsis">{{info.muscle}}</div>
         </div>
         <div class="diary-info-item">
           <div class="diary-info-label">Latest weight, {{info.date}}</div>
           <div class="dflex-between">
-              <div class="diary-info-item f50 tr">{{info.weight}}<span class="f32"> kg</span></div>
+              <div class="diary-info-item f50 tr">{{info.currently_weight}}<span class="f32"> kg</span></div>
               <div class="diary-info-item"><img class="diary-info-trend" :src="trend"></div>
           </div>
         </div>

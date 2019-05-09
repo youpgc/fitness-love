@@ -38,33 +38,7 @@ export default {
         span: 'SKIP'
       },
       formData: { muscle: 'Build Muscle'},
-      swiperOption: {
-            initialSlide: 0,
-            navigation: {
-                nextEl: '.swiper-next',
-            },
-            pagination: {
-                el: '.swiper-pagination',
-            },
-            on: {
-                touchStart: function(){
-                  if(this.realIndex != 0 && this.realIndex != 2){
-                      this.allowSlidePrev = true;
-                      this.allowSlideNext = true;
-                  }else if(this.realIndex == 0){
-                      this.allowSlidePrev = false;
-                  }else if(this.realIndex == 2){
-                      this.allowSlideNext = false;
-                  }
-                },
-                slideChange: function(){
-                    
-                },
-                slideTo: function(index){
-                  this.slideTo(index);
-                }
-            }
-      },
+      swiperOption: {},
       goals: [
           {title: 'Build Muscle', url: require('@/assets/images/back-06.png')},
           {title: 'Lose Fat', url: require('@/assets/images/back-06.png')},
@@ -82,7 +56,34 @@ export default {
   },
   methods: {
     initPage(){
-      
+      var _this = this;
+      _this.swiperOption = {
+        initialSlide: 0,
+          navigation: {
+              nextEl: '.swiper-next',
+          },
+          pagination: {
+              el: '.swiper-pagination',
+          },
+          on: {
+              touchStart: function(){
+                if(this.realIndex != 0 && this.realIndex != 2){
+                    this.allowSlidePrev = true;
+                    this.allowSlideNext = true;
+                }else if(this.realIndex == 0){
+                    this.allowSlidePrev = false;
+                }else if(this.realIndex == 2){
+                    this.allowSlideNext = false;
+                }
+              },
+              slideChange: function(){
+                _this.formData.muscle = _this.goals[this.realIndex].title;
+              },
+              slideTo: function(index){
+                this.slideTo(index);
+              }
+          }
+      }
     },
     skip(){
       console.log('skip');

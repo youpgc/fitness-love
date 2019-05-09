@@ -1,7 +1,8 @@
 <template>
- <div class="loading" v-if="loading">
+ <div class="loading" id="loading">
   <div class="loading-tip">
-    <img :src="imgUrl">
+    <img :src="imgUrl" :style="'width:'+size/100+'rem;height:'+size/100+'rem'">
+    <span v-if="type">{{text}}</span>
   </div>
  </div>
 </template>
@@ -12,6 +13,17 @@ export default {
     return {
       imgUrl: require('@/assets/images/loading.png'),
     };
+  },
+  props: {
+    text: {
+      type: String,
+      default: 'loading'
+    },
+    size: {
+      type: Number,
+      default: 80
+    },
+    type: false
   }
 };
 </script>
@@ -24,20 +36,23 @@ export default {
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 999;
+  z-index: 98;
   width: 100%;
   height: 100%;
-  color: #fff;
+  background: #fff;
 }
 .loading-tip {
   padding: 0.2rem 0.3rem;
-  background-color: rgba(41, 41, 41, 0.8);
   border-radius: 0.1rem;
+  line-height: 0.5rem;
 }
 .loading img {
-  width: 0.8rem;
-  height: 0.8rem;
   animation: rotate 1s linear infinite;
+}
+.loading-tip span{
+  font-size: 0.36rem;
+  color: #999;
+  margin-left: -0.16rem;
 }
 @keyframes rotate {
   from {

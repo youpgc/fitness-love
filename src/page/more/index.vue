@@ -36,8 +36,8 @@ export default {
         {title: 'My Profile', icon: require('@/assets/images/more-02.png'), link: '/'},
         {title: 'My Food and Recipes', icon: require('@/assets/images/more-03.png'), link: '/'},
         {title: 'Graph', icon: require('@/assets/images/more-04.png'), link: '/'},
-        {title: 'Apps & Devices', icon: require('@/assets/images/more-05.png'), link: '/'},
-        {title: 'Blog', icon: require('@/assets/images/more-06.png'), link: '/'},
+        {title: 'Apps & Devices', icon: require('@/assets/images/more-05.png'), link: '/devices'},
+        {title: 'Blog', icon: require('@/assets/images/more-06.png'), link: '/blog'},
         {title: 'Help', icon: require('@/assets/images/more-07.png'), link: '/'},
         {title: 'Settings', icon: require('@/assets/images/more-08.png'), link: '/'},
       ]

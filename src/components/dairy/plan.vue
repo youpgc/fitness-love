@@ -94,7 +94,10 @@ export default {
             if( this.checkSlide() ){
                 this.restSlide();
             }else{
-                console.log(this.plan,index);
+                this.$router.push({
+                    name: this.plan.ref,
+                    path: '/'+this.plan.ref
+                })
             }
         },
         touchstart(e){

@@ -14,6 +14,9 @@ function href(...arr) {
 export default new Router({
     mode: 'history',
     routes: [{
+        path: "*",
+        redirect: "/"
+    }, {
         path: '/',
         name: 'diaryIndex',
         alias: '/diaryIndex',
@@ -42,6 +45,14 @@ export default new Router({
         path: '/moreIndex',
         name: 'moreIndex',
         component: href('more', 'index')
+    }, {
+        path: '/devices',
+        name: 'devices',
+        component: href('more', 'devices')
+    }, {
+        path: '/blog',
+        name: 'blog',
+        component: href('more', 'blog')
     }, {
         path: '/workIndex',
         name: 'workIndex',
