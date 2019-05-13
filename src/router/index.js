@@ -46,6 +46,10 @@ export default new Router({
         name: 'moreIndex',
         component: href('more', 'index')
     }, {
+        path: '/food_recipes',
+        name: 'food_recipes',
+        component: href('more', 'food_recipes')
+    }, {
         path: '/devices',
         name: 'devices',
         component: href('more', 'devices')
@@ -53,6 +57,10 @@ export default new Router({
         path: '/blog',
         name: 'blog',
         component: href('more', 'blog')
+    }, {
+        path: '/blogInfo',
+        name: 'blogInfo',
+        component: href('more', 'blogInfo')
     }, {
         path: '/workIndex',
         name: 'workIndex',

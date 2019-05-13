@@ -115,7 +115,7 @@ export default {
     overflow: hidden;
 }
 .diary-msg-img{
-    width: 0.4rem;
+    width: 0.48rem;
     height: 0.48rem;
     float: right;
     margin-right: 0.16rem;

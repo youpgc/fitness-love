@@ -10,6 +10,9 @@
         <img :src="head.icon" class="fl" :class="head.iconclass?head.iconclass:iconStyle" v-if="head.icon"/>
         <span v-if="head.span">{{head.span}}</span>
       </div>
+      <div class="head-flfun" @click="getIcon" v-if="head.icon1">
+        <img :src="head.icon1" class="fl icon-flfun"/>
+      </div>
     </div>
   </div>
 </template>
@@ -30,13 +33,15 @@ export default {
   name: "headBar",
   data() {
     return {
-      iconId: "",
       iconStyle: "icon-frfun"
     };
   },
   methods: {
     getFun() {
       this.$emit("headfun");
+    },
+    getIcon(){
+      this.$emit('headicon');
     },
     back() {
       this.$router.go(-1);
@@ -56,7 +61,7 @@ export default {
   font-size: 0.36rem;
   color: #222;
   background: #fff;
-  padding: 0 0.5rem;
+  padding: 0 0.3rem;
   overflow: hidden;
 }
 .head-cont {
@@ -81,12 +86,25 @@ export default {
 }
 .icon-back {
   width: 0.5rem;
-  height: 0.42rem;
+  height: 0.5rem;
 }
 .icon-frfun {
   width: 0.47rem;
   height: 0.43rem;
   display: block;
+}
+.head-flfun{
+  height: 0.88rem;
+  position: absolute;
+  right: 0.88rem;
+  top: 0;
+  display: flex;
+  align-items: center;
+}
+.icon-flfun{
+  display: block;
+  width: 0.32rem;
+  height: 0.44rem;
 }
 .icon-search{
   display: block;

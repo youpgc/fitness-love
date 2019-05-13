@@ -33,8 +33,8 @@ export default {
       },
       moreList: [
         {title: 'Udgrade Pro', icon: require('@/assets/images/more-01.png'), link: '/'},
-        {title: 'My Profile', icon: require('@/assets/images/more-02.png'), link: '/'},
-        {title: 'My Food and Recipes', icon: require('@/assets/images/more-03.png'), link: '/'},
+        {title: 'My Profile', icon: require('@/assets/images/more-02.png'), link: '/mine'},
+        {title: 'My Food and Recipes', icon: require('@/assets/images/more-03.png'), link: '/food_recipes'},
         {title: 'Graph', icon: require('@/assets/images/more-04.png'), link: '/'},
         {title: 'Apps & Devices', icon: require('@/assets/images/more-05.png'), link: '/devices'},
         {title: 'Blog', icon: require('@/assets/images/more-06.png'), link: '/blog'},
