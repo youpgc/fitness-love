@@ -26,7 +26,7 @@
         <div class="swiper-button swiper-next" @click="toLogin">LOG IN</div>
       </div>
       <div class="swiper-tool" v-else>
-        <div class="swiper-button swiper-skip" @click="skip()">SKIP</div>
+        <div class="swiper-button swiper-skip" @click="skip">SKIP</div>
         <div class="swiper-button swiper-next">NEXT</div>
       </div>
     </div>
@@ -51,18 +51,13 @@ export default {
       ]
     }
   },
-  computed: {
-    swiper() {
-      return this.$refs.mySwiper.swiper
-    }
-  },
   created(){
      var _this = this;
     _this.swiperOption = {
-      initialSlide: 4,
+      initialSlide: 0,
       navigation: {
         nextEl: '.swiper-next',
-      },
+      },  
       pagination: {
         el: '.swiper-pagination',
       },
@@ -79,16 +74,14 @@ export default {
         },
         slideChange: function(){
           _this.swiperIndex = this.realIndex;
-        },
-        slideTo: function(index){
-          this.slideTo(index);
         }
       }
     }
   },
   methods: {
     skip(){
-      
+      console.log('skip')
+      // this.slideTo(this.swiperSlides.length);
     },
     toLogin(){
       this.$router.push({
@@ -100,7 +93,6 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .swiper-container{
   width: 100%;

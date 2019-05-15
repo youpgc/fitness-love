@@ -59,7 +59,7 @@ export default {
         select: require('@/assets/images/icon-11.png'),
         unselect: require('@/assets/images/icon-45.png')
       },
-      AJ: ['A','B','C','D','E','F','G','H','I','J'],
+      AG: ['A','B','C','D','E','F','G','H','I','J','K','L','M','N'],
       color: ['#5ac8fb','#44db5e', '#ff9500', '#5856d6', '#d81159', '#ff5e3a', '#4083ff'],
       tab:[
         {title:'FOOD', active:true},
@@ -110,9 +110,39 @@ export default {
           title: 'Workout Energy Salad',
           cal: '372 cal/serving',
           val: '4 serving'
+        }, {
+          title: 'Salmin-salad-stuffed Avocado',
+          cal: '369 cal/serving',
+          val: '2 serving'
+        }, {
+          title: 'Turkey Swiss Melt',
+          cal: '343 cal/serving',
+          val: '4 serving'
+        }, {
+          title: 'Orange Pecan Chicken Salad',
+          cal: '215 cal/serving',
+          val: '3 serving'
+        }, {
+          title: 'Arugula Chicken Salad',
+          cal: '285 cal/serving',
+          val: '1 serving'
+        }, {
+          title: 'Grilled Fish Soft Tacos',
+          cal: '369 cal/serving',
+          val: '6 serving'
         }
       ],
-      meals: [],
+      meals: [
+        {
+          title: 'Snack Morning',
+          cal: '120 cal/serving',
+          val: '2 serving'
+        },{
+          title: 'Snack Evening',
+          cal: '420 cal/serving',
+          val: '1 serving'
+        }
+      ],
       selectIndex: 0,
       createIndex: 0,
       createText: 'CREATE A FOOD'
@@ -155,13 +185,30 @@ export default {
           this.food[index].style = '';
           this.selectIndex --;
         }else{
-          this.food[index].index = this.AJ[this.selectIndex];
-          this.food[index].style = 'background-color:'+this.color[index];
+          var _index = 0;
+          for(let i=0;i<this.AG.length;i++){
+            var status = false;
+            for(let x=0;x<this.food.length;x++){
+              if(this.food[x].index == this.AG[i]){
+                status = true;
+                break;
+              }
+            }
+            if(status == false){
+              _index = i;
+              break;
+            }
+          }
+          this.food[index].index = this.AG[_index];
+          var colorIndex = _index;
+          if(colorIndex >= this.color.length){
+            colorIndex = colorIndex - this.color.length;
+          }
+          this.food[index].style = 'background-color:'+this.color[colorIndex];
           this.selectIndex ++;
         }
         this.food[index].select = !status;
       }
-      // console.log(item,index)
     }
   }
 }
@@ -186,7 +233,7 @@ export default {
   .list{
     overflow: scroll;
     height: calc(100% - 1rem);
-    padding: 0.3rem;
+    padding: 0.3rem 0.3rem 0;
   }
   .list-item{
     padding: 0.3rem 0.3rem;
@@ -201,6 +248,7 @@ export default {
     width: 0.48rem;
     height: 0.48rem;
     line-height: 0.48rem;
+    font-size: 0.32rem;
     border-radius: 50%;
     background: #e9e9e9;
     color: #fff;
@@ -232,17 +280,19 @@ export default {
   .icon-cal{
     width: 0.2rem;
     height: 0.29rem;;
+    vertical-align: middle;
   }
   .icon-val{
     width: 0.28rem;
     height: 0.23rem;
+    vertical-align: middle;
   }
   .list-empty{
     line-height: 1rem;
   }
   .create-btn{
     position: fixed;
-    bottom: 0.8rem;
+    bottom: 0.2rem;
     left: 50%;
     transform: translate(-50%, 0);
     width: calc(100% - 1rem);

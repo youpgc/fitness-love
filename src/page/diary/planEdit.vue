@@ -105,6 +105,7 @@ export default {
  .plan-tag-item img{
      width: 0.25rem;
      height: 0.25rem;
+     vertical-align: middle;
  }
  .plan-tag-item span{
   font-size: 0.28rem;

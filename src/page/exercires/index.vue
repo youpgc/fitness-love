@@ -60,9 +60,9 @@ export default {
       },
       search: '',
       moreList: [
-        {title: 'Auto Tracking', icon: require('@/assets/images/more-05.png'), link: '/'},
+        {title: 'Auto Tracking', icon: require('@/assets/images/more-05.png'), link: '/autoTrack'},
         {title: 'List of Exercises', icon: require('@/assets/images/more-09.png'), link: '/'},
-        {title: 'User\'s Exercises', icon: require('@/assets/images/more-10.png'), link: '/'},
+        {title: 'User\'s Exercises', icon: require('@/assets/images/more-10.png'), link: '/addNewPlan'},
         {title: 'User\'s Workout Plan', icon: require('@/assets/images/more-08.png'), link: '/'}
       ],
       addList: [

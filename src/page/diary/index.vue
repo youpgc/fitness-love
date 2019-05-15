@@ -207,7 +207,7 @@ export default {
       }).then((res)=>{
         if(!loginStatus){
           _this.$toast('login failure');
-          window.localStorage.clear();
+          window.localStorage.setItem('infoData',{ status: false});
           setTimeout(()=>{
             _this.$router.push({
               path: '/login',
@@ -229,7 +229,6 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .diary-cont{
     width: 100%;

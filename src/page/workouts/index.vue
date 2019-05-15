@@ -182,6 +182,9 @@ export default {
     width: 0.24rem;
     height: 0.26rem;
   }
+  .stock-result-img img{
+    vertical-align: middle;
+  }
   .stock-result-title{
     display: inline-block;
     font-size: 0.3rem;

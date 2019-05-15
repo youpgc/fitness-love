@@ -225,14 +225,17 @@ export default {
  .plan-ready-item img{
      width: 0.25rem;
      height: 0.25rem;
+     vertical-align: middle;
  }
  .plan-icon-cal{
      width: 0.2rem;
      height: 0.29rem;
+     vertical-align: middle;
  }
  .plan-icon-eat{
      width: 0.28rem;
      height: 0.23rem;
+     vertical-align: middle;
  }
  .plan-ready-item span, .plan-result-item span{
      font-size: 0.28rem;
@@ -264,7 +267,7 @@ export default {
      line-height: 0.48rem;
      text-align: center;
      border-radius: 50%;
-     font-size: 0.24rem;
+     font-size: 0.32rem;
      font-weight: bold;
      color: #fff;
      position: absolute;

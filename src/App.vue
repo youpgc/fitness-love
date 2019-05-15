@@ -6,7 +6,22 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  created(){
+    var data = window.localStorage.getItem('infoData');
+    data = JSON.parse(data);
+    if(!data){
+      this.$router.push({
+        name: 'startIndex',
+        path: '/startIndex'
+      })
+    }else if(data && !data.status){
+      this.$router.push({
+        name: 'login',
+        path: '/login'
+      })
+    }
+  }
 }
 </script>
 

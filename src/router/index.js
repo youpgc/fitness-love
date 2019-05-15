@@ -42,6 +42,14 @@ export default new Router({
         name: 'exeSearch',
         component: href('exercires', 'search')
     }, {
+        path: '/autoTrack',
+        name: 'autoTrack',
+        component: href('exercires', 'autoTrack')
+    }, {
+        path: '/addNewPlan',
+        name: 'addNewPlan',
+        component: href('exercires', 'addNewPlan')
+    }, {
         path: '/moreIndex',
         name: 'moreIndex',
         component: href('more', 'index')
