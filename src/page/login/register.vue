@@ -71,16 +71,24 @@ export default {
   },
   methods: {
     initPage(){
+      const type = this.$route.params.type;
+      // 路由参数修改注册方式
+      if(type == 'phone'){
+        this.changeType(false);
+      }
       if(!this.DB.db){
         this.DB.init();
       }
     },
+    // 切换注册方式
     changeType(status){
       this.type = status;
+      // 重置表单
       for(let key in this.formData){
         this.formData[key] = '';
       }
     },
+    // 表单验证
     toResit(){
       var msg = '';
       var regPhone = /^1(3|4|5|7|8)\d{9}$/;
@@ -106,22 +114,24 @@ export default {
         this.saveLog();
       }
     },
+    // 注册请求
     saveLog(){
       var _this = this;
+      // 参数准备
       var data = {
         title: 'register', 
         email: _this.formData.email, 
         password: _this.formData.pwd, 
-        phone: _this.formData.phone
+        phone: _this.formData.phone,
+        infoStatus: 0 // 完善信息状态 0 未完善 1 已完善 
       }
+      //添加用户信息
       _this.DB.add(data, function(res){
-        data['id'] = res;
         _this.$toast('registered successfully');
         setTimeout(()=>{
           _this.$router.push({
-            path: '/step1',
-            name: 'step1',
-            params: data
+            path: '/login',
+            name: 'login'
           });
         },1500)
       },function(res){

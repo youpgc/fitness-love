@@ -61,9 +61,14 @@ export default {
       console.log(this.info)
     },
     nextStep(){
-      this.$router.push({
-        path: '/lgoin',
-        name: 'login'
+      const _this = this;
+      let data = _this.info;
+      data['infoStatus'] = 1;
+      _this.DB.put(data, function(res){
+        _this.$router.push({
+          path: '/',
+          name: 'diaryIndex'
+        })
       })
     }
   }

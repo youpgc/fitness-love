@@ -13,8 +13,8 @@
                 Fitness Love - This app will allow you to achieve great results, within a short period of time.
               </div>
               <div class="navig-btns">
-                <router-link to="/register" class="navig-btn sign-facebook">sign up with phone number</router-link>
-                <router-link to="/register" class="navig-btn sign-email">sign up with email</router-link>
+                <router-link :to="{ name: 'register', params: { type: 'phone'}}" class="navig-btn sign-facebook">sign up with phone number</router-link>
+                <router-link :to="{ name: 'register', params: { type: 'email'}}" class="navig-btn sign-email">sign up with email</router-link>
               </div>
             </div>
           </div>
@@ -45,7 +45,7 @@ export default {
       swiperSlides: [
         {title: 'SIMPLE TIPS TO BALANCE YOUR MIND, BODY & SOUL', bac: require("@/assets/images/back-01.jpg")},
         {title: 'SMALL CHANGES CAN MAKE A BIG DIFFERENCE', bac: require("@/assets/images/back-02.jpg")},
-        {title: 'SHARE YOUR WORKOUT PLAN WITH YOUR FRIEDN', bac: require("@/assets/images/back-03.jpg")},
+        {title: 'SHARE YOUR WORKOUT PLAN WITH YOUR FRIEND', bac: require("@/assets/images/back-03.jpg")},
         {title: 'TRACK YOUR NUTRITION, FITNESS, & HEALTH DATA', bac: require("@/assets/images/back-04.jpg")},
         {title: '', bac: require("@/assets/images/back-05.jpg")}
       ]

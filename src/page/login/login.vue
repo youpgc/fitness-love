@@ -68,6 +68,7 @@ export default {
         this.DB.init();
       }
     },
+    // 表单验证
     login(){
       var msg = '';
       var regPhone = /^1(3|4|5|7|8)\d{9}$/;
@@ -89,6 +90,7 @@ export default {
         this.saveLog();
       }
     },
+    // 登录请求
     saveLog(){
       var _this = this;
       var member = 'email', pwd = _this.formData.email;
@@ -117,8 +119,10 @@ export default {
       })
       
     },
+    // 切换登录方式
     changeType(status){
       this.type = status;
+      // 清空表单
       for(let key in this.formData){
         this.formData[key] = '';
       }

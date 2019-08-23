@@ -26,10 +26,15 @@ const tool = {
     },
     getFileURL: function(file) { //文件生成链接
         var getUrl = null;  
-        if (window.createObjectURL != undefined) { // basic
-                  getUrl = window.createObjectURL(file);   } else if (window.URL != undefined) { // mozilla(firefox)
-                  getUrl = window.URL.createObjectURL(file);   } else if (window.webkitURL != undefined) { // webkit or chrome
-                  getUrl = window.webkitURL.createObjectURL(file);   }  
+        if (window.createObjectURL && window.createObjectURL != undefined) { // basic
+            getUrl = window.createObjectURL(file);   
+        } else if (window.URL && window.URL != undefined) { // mozilla(firefox)
+            getUrl = window.URL.createObjectURL(file);   
+        } else if (window.webkitURL && window.webkitURL != undefined) { // webkit or chrome
+            getUrl = window.webkitURL.createObjectURL(file);   
+        } else {
+            getUrl = '';
+        }  
         return getUrl;
     }
 }

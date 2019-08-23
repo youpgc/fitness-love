@@ -114,13 +114,13 @@ export default {
       }else{
         var data = _this.formData;
         delete data['via'];
-          _this.DB.put(data, function(res){
-            _this.$router.push({
-              path: '/step2',
-              name: 'step2',
-              params: _this.formData
-            })
+        _this.DB.put(data, function(res){
+          _this.$router.push({
+            path: '/step2',
+            name: 'step2',
+            params: _this.formData
           })
+        })
       }
     }
   }

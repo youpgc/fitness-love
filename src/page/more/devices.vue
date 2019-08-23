@@ -6,7 +6,7 @@
         <div class="tab-item" @click="changeTab(index)" :class="{'active':item.active}" v-for="(item,index) in tab" :key="index">{{item.title}}</div>
       </div>
       <div class="devices-list">
-        <div class="list-item shadow dflex-between" v-for="(item,index) in devices" :key="index">
+        <div class="list-item shadow dflex-between" v-for="(item,index) in devices" :key="index" @click="getItem(item,index)">
           <div class="list-item-logo"><img :src="item.logo"></div>
           <div class="list-item-cont">
             <div class="list-item-title ellipsis">{{item.title}}</div>
@@ -14,7 +14,7 @@
             <div class="list-item-unit oh">
               <img :src="icon.correct" v-if="item.status">
               <img :src="icon.error" v-else>
-              <span>{{item.type}}</span>
+              <span :class="{'unselect':!item.status}">{{item.type}}</span>
             </div>
           </div>
         </div>
@@ -43,24 +43,25 @@ export default {
         error: require('@/assets/images/icon-26.png')
       },
       tab:[
-        {title:'CONNECTED (2)', active:true},
+        {title:'CONNECTED (0)', active:true},
         {title:'ALL', active:false}
       ],
       devices: [],
-      connected: [
+      connectIndex: 0,
+      connected: [],
+      all: [
+        {logo: require('@/assets/images/pic-06.png'), title: 'Google Fit', span: 'Google LLC', type: 'Connected', status: false},
         {logo: require('@/assets/images/pic-07.png'), title: 'Healthkit', span: 'Apple Inc', type: 'Connected', status: true},
-        {logo: require('@/assets/images/pic-08.png'), title: 'Runkeeper', span: 'FitnessKeeper, Inc', type: 'Connected', status: true}
-      ],
-      all: []
+        {logo: require('@/assets/images/pic-08.png'), title: 'Runkeeper', span: 'FitnessKeeper, Inc', type: 'Connected', status: true},
+        {logo: require('@/assets/images/pic-09.png'), title: 'Connect Mobile', span: 'Garmin Ltd', type: 'Connected', status: false},
+        {logo: require('@/assets/images/pic-10.png'), title: 'Fitbit', span: 'Fitbit, Inc', type: 'Connected', status: false},
+      ]
     }
   },
   created(){
-    this.initPage();
+    this.render();
   },
   methods: {
-    initPage(){
-      this.devices = this.connected;
-    },
     changeTab(index){
       this.tab.map((item,index)=>{
         item.active = false;
@@ -71,12 +72,32 @@ export default {
       }else{
         this.devices = this.all;
       }
+    },
+    render(){
+      this.connectIndex = 0;
+      var arr = [];
+      this.all.map(item=>{
+        if(item.status){
+          arr.push(item);
+          this.connectIndex ++;
+        }
+      })
+      this.connected = arr;
+      this.tab[0].title = 'CONNECTED ('+this.connectIndex+')';
+      if(this.tab[0].active){
+        this.devices = this.connected;
+      }else{
+        this.devices = this.all;
+      }
+    },
+    getItem(item,index){
+      item.status = !item.status;
+      this.render();
     }
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .devices-tab{
     height: 1rem;
@@ -108,8 +129,7 @@ export default {
     margin-bottom: 0;
   }
   .list-item-logo{
-    width: 1.64rem;
-    height: 1.79rem;
+    width: 1.62rem;
   }
   .list-item-cont{
     flex: 1;
@@ -136,6 +156,9 @@ export default {
     line-height: 0.38rem;
     font-size: 0.3rem;
     color: #ff5e3a;
+  }
+  .unselect{
+    color: #e2e2e2 !important;
   }
   .list-empty{
     color: #999;

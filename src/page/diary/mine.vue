@@ -6,7 +6,7 @@
             <div class="diary-msg">
                 <router-link to="/msgIndex" class="diary-msg-img">
                     <img :src="icon.msg">
-                    <span>{{infoData.msgIndex}}</span>
+                    <span v-if="infoData.msgIndex > 0">{{infoData.msgIndex}}</span>
                 </router-link>
             </div>
             <div class="mine-via" :class="{'animat':animat}">
@@ -57,11 +57,11 @@ export default {
             },
             animat: false,
             infoData: {
-                goal: 'Gain weight',
-                date: 'Jan 22',
-                weight: '74',
-                name: 'Youpgc',
-                msgIndex: '6'
+                goal: '',
+                date: '',
+                weight: '',
+                name: '',
+                msgIndex: 0
             },
             menu: [
                 {icon: require('@/assets/images/icon-52.png'), title: 'Upgrade Professional', href: '/', width: '0.48rem', height: '0.64rem', default: true},
@@ -86,7 +86,19 @@ export default {
     },
     methods: {
         init(){
-            
+            const _this = this;
+            if(_this.DB.db){
+                _this.DB.get(function(res){
+                    _this.infoData = res;
+                    var blob = res.viaBlob;
+                    _this.icon.via = _this.tool.getFileURL(blob);
+                })
+            }else{
+                setTimeout(()=>{
+                    _this.DB.init();
+                    _this.init();
+                },100)
+            }
         }
     }
 }

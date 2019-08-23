@@ -2,31 +2,44 @@
   <div class="pb110">
     <div class="navos">
       <div class="diary-cont">
+        <!-- 新消息 -->
         <div class="diary-msg">
           <router-link to="/msgIndex" class="diary-msg-img">
             <img :src="icon.msg">
-            <span>{{infoData.msgIndex}}</span>
+            <span v-if="infoData.msgIndex > 0">{{infoData.msgIndex}}</span>
           </router-link>
         </div>
+        <!-- 用户基础信息 -->
         <div class="diary-data">
-          <router-link :to="{ name:'mine',params:{'animat': true} }" class="diary-data-portrait">
+          <!-- 用户头像 -->
+          <router-link :to="{ name:'mine', params:{'animat': true} }" class="diary-data-portrait">
             <img :src="icon.portrait">
           </router-link>
+          <!-- 今日结语 -->
           <div class="diary-data-greeting">
-            <div>Hello <span>{{infoData.username}}</span> ,</div>
+            <div>Hello <span>{{infoData.name}}</span> ,</div>
             <div>Things look allright.</div>
           </div>
         </div>
+        <!-- 今日概览 -->
         <info-html v-bind:info="infoData"></info-html>
+        <!-- 运动近况 -->
         <schedule-html v-bind:schedule="scheduleData" class="diary-temp"></schedule-html>
+        <!-- 锻炼计划 -->
         <plan-html v-bind:plan="workout" v-if="workout.show"></plan-html>
+        <!-- 早餐 -->
         <plan-html v-bind:plan="breakfast" v-if="breakfast.show"></plan-html>
+        <!-- 午餐 -->
         <plan-html v-bind:plan="lunch" v-if="lunch.show"></plan-html>
+        <!-- 晚餐 -->
         <plan-html v-bind:plan="dinner" v-if="dinner.show"></plan-html>
+        <!-- 零食 -->
         <plan-html v-bind:plan="snack" v-if="snack.show"></plan-html>
+        <!-- 饮水 -->
         <plan-html v-bind:plan="water" v-if="water.show"></plan-html>
       </div>
     </div>
+    <!-- 导航下标 -->
     <nav-bar grade="0"></nav-bar>
   </div>
 </template>
@@ -48,7 +61,9 @@ export default {
   name: 'diaryIndex',
   data () {
     return {
+      // 加载等待
       loading: true,
+      // 图片icon
       icon: {
         back: require('@/assets/images/back-07.png'),
         msg: require('@/assets/images/icon-02.png'),
@@ -57,20 +72,24 @@ export default {
         prev: require('@/assets/images/icon-04.png'),
         next: require('@/assets/images/icon-05.png'),
       },
+      // 月份
       months:['Jan','Feb', 'Mar', 'Apr', 'May','Jun', 'Jul', 'Aug','Sep', 'Oct', 'Nov', 'Dec'],
+      // 缓存数据
       localData: {},
+      // 基本信息
       infoData: {
-        muscle: 'Gain weight',
-        date: 'Jan 22',
-        weight: '74',
-        username: 'Youpgc',
-        msgIndex: '6'
+        muscle: '',
+        date: '',
+        weight: '',
+        msgIndex: 0
       },
+      // 运动近况
       scheduleData: [
         {calories: '1970', date: 'yesterday', logCal:'', eaten: '1842', burned: '960'},
         {calories: '1970', date: 'today', logCal: '', eaten: '1317', burned: '768'},
         {calories: '1970', date: 'tomorrow', logCal: '', eaten: '0', burned: '0'},
       ],
+      // 锻炼计划
       workout: {
         type: 1,
         title: 'WORKOUT PLAN',
@@ -84,6 +103,7 @@ export default {
         }],
         show: true,
       },
+      // 早餐
       breakfast: {
         type: 2,
         title: 'BREAKFAST',
@@ -108,6 +128,7 @@ export default {
         recom: '615 - 820 cal',
         show: true,
       },
+      // 午餐
       lunch: {
         type: 2,
         title: 'LUNCH',
@@ -125,6 +146,7 @@ export default {
         recom: '731 - 975 cal',
         show: true,
       },
+      // 晚餐
       dinner: {
         type: 2,
         title: 'DINNER',
@@ -142,6 +164,7 @@ export default {
         recom: '1293 cal',
         show: true,
       },
+      // 零食
       snack: {
         type: 2,
         title: 'SNACK',
@@ -151,6 +174,7 @@ export default {
         recom: '0 - 600 cal',
         show: true
       },
+      // 饮水
       water: {
         type: 3,
         title: 'WATER',
@@ -163,10 +187,14 @@ export default {
     }
   },
   created(){
+    // 加载中
     this.$loading.show();
+    // 获取缓存
     this.localData = window.localStorage;
+    // 开启DB
     this.initDB();
-    this.infoData.date = this.months[new Date().getMonth()]+' '+new Date().getDay();
+    // 获取当前时间
+    this.infoData.date = this.months[new Date().getMonth()]+' '+new Date().getDate();
   },
   mounted(){
     this.initPage();
@@ -189,17 +217,28 @@ export default {
       var _this = this;
       var loginStatus = false;
       new Promise((resolve, reject)=>{
+
         _this.DB.get(function(res){
           if(res.id){
             _this.DB.dataIndex = res.id + 1;
           }
           if(res.title == "login" && res.status){
             loginStatus = true;
-            res['msgIndex'] = 6;
+            // 获取最新消息
+            res['msgIndex'] = 0;
             var data = JSON.stringify(res);
-            window.localStorage.setItem('infoData',data);
-            for(let key in res){
-              _this.infoData[key] = res[key];
+            if(JSON.parse(data)['infoStatus'] == 1){
+              window.localStorage.setItem('infoData',data);
+              for(let key in res){
+                _this.infoData[key] = res[key];
+              }
+            } else {
+              _this.$router.push({
+                path: '/step1',
+                name: 'step1',
+                params: JSON.parse(data)
+              })
+              return _this.$loading.hide();
             }
           }
           resolve()
