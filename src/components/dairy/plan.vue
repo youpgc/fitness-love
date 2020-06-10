@@ -19,7 +19,7 @@
                     </div>
                 </div>
             </div>
-            <div class="plan-cont-item" @touchstart.capture="touchstart" @touchend.capture="touchend" @click="skip(index)" v-if="plan.type == 2">
+            <div class="plan-cont-item" @touchstart.capture="touchstart" @touchend.capture="touchend" @click="skip(item,index)" v-if="plan.type == 2">
                 <div class="plan-cont-AZ" :style="'background-color:'+getAZ(item.index,true)">{{getAZ(item.index)}}</div>
                 <div class="plan-cont-title ellipsis">{{item.title}}</div>
                 <div class="plan-cont-result">
@@ -52,7 +52,7 @@
             </div>
         </div>
         <div class="plan-recom dflex-between" v-if="plan.type != 1">
-            <div class="plan-recom-real"><span>{{plan.sum}}</span><img :src='icon.warn'/></div>
+            <div class="plan-recom-real" @click="todo(plan)"><span>{{plan.sum}}</span><img :src='icon.warn'/></div>
             <div class="plan-recom-txt">Recommended {{plan.recom}}</div>
         </div>
     </div>
@@ -90,14 +90,38 @@ export default {
         })
     },
     methods: {
-        skip(index){
+        skip(item, index){
             if( this.checkSlide() ){
                 this.restSlide();
             }else{
-                this.$router.push({
-                    name: this.plan.ref,
-                    path: '/'+this.plan.ref
-                })
+                if(this.plan.ref) {
+                    this.$router.push({
+                        name: this.plan.ref,
+                        path: '/'+this.plan.ref
+                    })
+                }else {
+                    this.$toast('暂未开放');
+                }
+            }
+        },
+        todo(plan) {
+            switch (plan.type) {
+                case 1: 
+                    //do somethings
+                    break;
+                case 2: 
+                    this.$router.push({
+                        name: 'meal',
+                        path: '/meal',
+                        params: { title: plan.title}
+                    })
+                    break;
+                case 3: 
+                    //do somethings
+                    break;
+                default: 
+                    //do somethings
+                    break;
             }
         },
         touchstart(e){

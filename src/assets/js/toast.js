@@ -4,7 +4,7 @@ import toast from '../../components/tool/toast'
 
 const ToastConstructor = vue.extend(toast)
 
-function showToast(title, status = false, type = false, getCan = function() {}, getFun = function() {}, duration = 1500) {
+function showToast(title, status = false, type = false, getCan = function() {}, getFun = function() {}, duration = 1000) {
     const toastDom = new ToastConstructor({
         el: document.createElement('div'),
         data() {

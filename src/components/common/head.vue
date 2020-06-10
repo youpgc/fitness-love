@@ -61,6 +61,7 @@ export default {
   font-size: 0.36rem;
   color: #222;
   background: #fff;
+  box-shadow: 0 0.05rem 0.2rem 0 rgba(0,0,0,0.2);
   padding: 0 0.3rem;
   overflow: hidden;
 }

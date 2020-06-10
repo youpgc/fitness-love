@@ -9,12 +9,12 @@
       </div>
       <div class="ele-cont">
         <div class="ele-more">
-          <router-link :to="item.link" class="ele-more-item shadow" v-for="(item,index) in moreList" :key="index">
+          <div class="ele-more-item shadow" @click="todo(item)" v-for="(item,index) in moreList" :key="index">
             <div class="ele-more-img">
               <img :src="item.icon">
             </div>
             <div class="ele-more-title ellipsis">{{item.title}}</div>
-          </router-link>
+          </div>
         </div>
         <div class="ele-recent shadow">
           <div class="recent-title bbse9">YOUR RENCENT ADDED</div>
@@ -61,9 +61,9 @@ export default {
       search: '',
       moreList: [
         {title: 'Auto Tracking', icon: require('@/assets/images/more-05.png'), link: '/autoTrack'},
-        {title: 'List of Exercises', icon: require('@/assets/images/more-09.png'), link: '/'},
+        {title: 'List of Exercises', icon: require('@/assets/images/more-09.png'), link: null},
         {title: 'User\'s Exercises', icon: require('@/assets/images/more-10.png'), link: '/addNewPlan'},
-        {title: 'User\'s Workout Plan', icon: require('@/assets/images/more-08.png'), link: '/'}
+        {title: 'User\'s Workout Plan', icon: require('@/assets/images/more-08.png'), link: null}
       ],
       addList: [
         {title: 'Aerial Hoop', cal: '220 cal', time: '15 mins'},
@@ -77,6 +77,13 @@ export default {
   methods: {
     initPage(){
 
+    },
+    todo (item) {
+      if(item.link) {
+        this.$router.push(item.link)
+      }else {
+        this.$toast('暂未开放');
+      }
     }
   }
 }

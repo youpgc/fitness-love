@@ -93,7 +93,8 @@ export default {
       workout: {
         type: 1,
         title: 'WORKOUT PLAN',
-        ref: 'workout',
+        ref: null,
+        // ref: 'workout',
         list: [{
           date: 'Today, 17:30 PM',
           text: 'Chest, Trap, Tricep, Abs',
@@ -107,7 +108,8 @@ export default {
       breakfast: {
         type: 2,
         title: 'BREAKFAST',
-        ref: 'breakfast',
+        ref: null,
+        // ref: 'breakfast',
         list: [
           {
             title: 'Chicken sandwich',
@@ -132,7 +134,8 @@ export default {
       lunch: {
         type: 2,
         title: 'LUNCH',
-        ref: 'lunch',
+        ref: null,
+        // ref: 'lunch',
         list: [
           {
             title: 'Chicken sandwich Oz',
@@ -150,7 +153,8 @@ export default {
       dinner: {
         type: 2,
         title: 'DINNER',
-        ref: 'dinner',
+        ref: null,
+        // ref: 'dinner',
         list: [
           {
             title: 'Skinny buffalo chicken dip',
@@ -168,7 +172,8 @@ export default {
       snack: {
         type: 2,
         title: 'SNACK',
-        ref: 'snack',
+        ref: null,
+        // ref: 'snack',
         list: [],
         sum: '0 Cal',
         recom: '0 - 600 cal',
@@ -178,6 +183,8 @@ export default {
       water: {
         type: 3,
         title: 'WATER',
+        ref: null,
+        // ref: 'water',
         list: [{date: '2019-4-22 14:32',status: true}],
         empty: [1,2,3,4],
         sum: '0.4 liters',

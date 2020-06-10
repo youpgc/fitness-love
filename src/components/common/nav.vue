@@ -107,7 +107,7 @@ export default {
   z-index: 99;
   width: 100%;
   height: 1.1rem;
-  box-shadow: 0 -0.05rem 0.2rem 0 #ddd;
+  box-shadow: 0 -0.05rem 0.2rem 0 rgba(0,0,0,0.2);
   background: #fff;
 }
 .tab {

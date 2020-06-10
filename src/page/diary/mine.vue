@@ -19,7 +19,7 @@
                 <div class="diary-temp">
                     <div class="menu-head">MENU</div>
                     <div class="menu-list">
-                        <router-link :to="item.href" class="menu-item btse9" v-for="(item,index) in menu" :key="index">
+                        <div class="menu-item btse9" @click="todo(item)" v-for="(item,index) in menu" :key="index">
                             <div class="menu-item-icon">
                                 <img :src="item.icon" :style="'width:'+item.width+'; height:'+item.height">
                             </div>
@@ -27,7 +27,7 @@
                             <div class="menu-item-next">
                                 <img :src="icon.next"/>
                             </div>
-                        </router-link> 
+                        </div>
                     </div>
                 </div>
             </div>
@@ -64,12 +64,12 @@ export default {
                 msgIndex: 0
             },
             menu: [
-                {icon: require('@/assets/images/icon-52.png'), title: 'Upgrade Professional', href: '/', width: '0.48rem', height: '0.64rem', default: true},
-                {icon: require('@/assets/images/icon-53.png'), title: 'Edit Profile', href: '/', width: '0.6rem', height: '0.6rem', default: true},
-                {icon: require('@/assets/images/icon-54.png'), title: 'Change Goal', href: '/', width: '0.64rem', height: '0.64rem', default: true},
-                {icon: require('@/assets/images/icon-55.png'), title: 'My Progress Photo', href: '/', width: '0.56rem', height: '0.64rem', default: true},
-                {icon: require('@/assets/images/icon-56.png'), title: 'Blog Bookmark', href: '/', width: '0.46rem', height: '0.64rem', default: true},
-                {icon: require('@/assets/images/icon-57.png'), title: 'Invite friend and family', href: '/', width: '0.65rem', height: '0.6rem', default: true},
+                {icon: require('@/assets/images/icon-52.png'), title: 'Upgrade Professional', href: null, width: '0.48rem', height: '0.64rem', default: true},
+                {icon: require('@/assets/images/icon-53.png'), title: 'Edit Profile', href: null, width: '0.6rem', height: '0.6rem', default: true},
+                {icon: require('@/assets/images/icon-54.png'), title: 'Change Goal', href: null, width: '0.64rem', height: '0.64rem', default: true},
+                {icon: require('@/assets/images/icon-55.png'), title: 'My Progress Photo', href: null, width: '0.56rem', height: '0.64rem', default: true},
+                {icon: require('@/assets/images/icon-56.png'), title: 'Blog Bookmark', href: null, width: '0.46rem', height: '0.64rem', default: true},
+                {icon: require('@/assets/images/icon-57.png'), title: 'Invite friend and family', href: null, width: '0.65rem', height: '0.6rem', default: true},
             ]
         }
     },
@@ -98,6 +98,13 @@ export default {
                     _this.DB.init();
                     _this.init();
                 },100)
+            }
+        },
+        todo (item) {
+            if(item.href){
+                this.$router.push(item.href)
+            }else {
+                this.$toast('暂未开放');
             }
         }
     }

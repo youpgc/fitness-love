@@ -29,6 +29,10 @@ export default new Router({
         path: '/mine',
         name: 'mine',
         component: href('diary', 'mine')
+    },{
+        path: '/meal',
+        name: 'meal',
+        component: href('diary', 'meal')
     }, {
         path: '/plan',
         name: 'plan',
