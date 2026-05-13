@@ -1,7 +1,7 @@
 <template>
     <div class="doughnut-chart" v-if="recommend">
         <div class="doughnut-recom">{{total}}</div>
-        <canvas id="doughnut"></canvas>
+        <canvas :id="'doughnut-' + _uid"></canvas>
     </div>
 </template>
 <script>
@@ -19,43 +19,44 @@ export default {
   },
   methods: {
     getDoughnut() {
+        const chartId = 'doughnut-' + this._uid;
         const map = {};
             this.recommend.forEach(function(obj) {
             map[obj.name] = obj.percent + '%';
             map[obj.name + '_val'] = obj.value + ' cal';
         });
 
-        const chart = new F2.Chart({
-            id: 'doughnut',
+        this.chart = new F2.Chart({
+            id: chartId,
             pixelRatio: window.devicePixelRatio,
             padding: [ 0, 'auto' ]
         });
-        chart.source(this.recommend, {
+        this.chart.source(this.recommend, {
             percent: {
                 formatter: function formatter(val) {
                     return val + '%';
                 }
             }
         });
-        chart.tooltip(false);
-        chart.legend({
+        this.chart.tooltip(false);
+        this.chart.legend({
             position: 'right',
             itemFormatter: function itemFormatter(val) {
                 return '\n' + val + '\n' + map[val]+ ' ~ ' + map[val + '_val'];
             }
         });
-        chart.coord('polar', {
+        this.chart.coord('polar', {
             transposed: true,
             innerRadius: 0.8,
             radius: 0.9
         });
-        chart.axis(false);
-        chart.interval()
+        this.chart.axis(false);
+        this.chart.interval()
         .position('a*percent')
         .color('name', [ '#5AC8FB', '#5856D6', '#FF5E3A', '#D81159' ])
         .adjust('stack');
 
-        chart.guide().html({
+        this.chart.guide().html({
             position: [ '50%', '55%' ],
             html: `<div style="width: 3.6rem; height: auto; text-align: center;">
                 <div style="font-size: 0.8rem; color: #282C37">842</div>
@@ -63,7 +64,12 @@ export default {
                 <div style="font-size: 0.36rem; line-height: 0.8rem; color: #FF5F3B">So Great!</div>
                 </div>`
         });
-        chart.render();
+        this.chart.render();
+    },
+    beforeDestroy(){
+        if(this.chart){
+            this.chart.destroy();
+        }
     }
   }
 };

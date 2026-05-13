@@ -47,7 +47,7 @@ export default {
     }
   },
   created(){
-    var data = this.$route.params;
+    const data = this.$route.params;
     for(let key in data){
       this.formData[key] = data[key];
     }
@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     initPage(){
-      var _this = this;
+      const _this = this;
       _this.swiperOption = {
         initialSlide: 0,
           navigation: {
@@ -78,9 +78,6 @@ export default {
               },
               slideChange: function(){
                 _this.formData.muscle = _this.goals[this.realIndex].title;
-              },
-              slideTo: function(index){
-                this.slideTo(index);
               }
           }
       }
@@ -89,7 +86,7 @@ export default {
       console.log('skip');
     },
     nextStep(){
-      var _this = this;
+      const _this = this;
       _this.DB.put(_this.formData, function(res){
         _this.$router.push({
           path: '/step3',

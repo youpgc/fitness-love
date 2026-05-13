@@ -17,7 +17,7 @@ export default {
   data () {
     return {
       headData: {
-        text: 'fotgot',
+        text: 'forgot',
         src: require('@/assets/images/icon-30.png')
       },
       msg: 'forgot'

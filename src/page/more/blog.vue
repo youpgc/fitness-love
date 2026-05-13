@@ -139,13 +139,9 @@ export default {
     }
   },
   created(){
-    this.initPage();
     this.changeTab(0);
   },
   methods: {
-    initPage(){
-      this.devices = this.connected;
-    },
     changeTab(index){
       this.tab.map((item,index)=>{
         item.active = false;

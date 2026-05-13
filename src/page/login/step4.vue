@@ -62,15 +62,15 @@ export default {
       this.frequency = this.active[index].title;
     },
     nextStep(){
-      var _this = this;
-      var msg = '';
+      const _this = this;
+      let msg = '';
       if(_this.frequency.length==0){
         msg = 'Please select your active index'
       }
       if(msg.length>0){
         _this.$toast(msg)
       }else{
-        var data = _this.$route.params;
+        const data = { ..._this.$route.params };
         data['active'] = _this.frequency;
         data['step'] = 4;
         _this.DB.put(data, function(res){

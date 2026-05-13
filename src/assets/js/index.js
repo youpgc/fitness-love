@@ -1,42 +1,54 @@
-window.onresize = function() {
-    calcFontSize();
-};
+/**
+ * 工具函数集合
+ */
 
-window.onload = function() {
-    calcFontSize();
-};
+// 使用 addEventListener 避免覆盖其他脚本的事件监听
+window.addEventListener('resize', calcFontSize);
+window.addEventListener('load', calcFontSize);
 
+/**
+ * 计算根元素字体大小（移动端适配）
+ */
 function calcFontSize() {
-    var w = document.body.clientWidth;
-    var fs = (Math.max(320, w) / 750) * 100;
+    const w = document.body.clientWidth;
+    const fs = (Math.max(320, w) / 750) * 100;
     document.body.style.fontSize = fs + 'px';
 }
 
 const tool = {
-    dataURItoBlob: function(dataURI) { // base64 解码
-        let byteString = window.atob(dataURI.split(',')[1]);
-        let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-        let T = mimeString.split('/')[1];
-        let ab = new ArrayBuffer(byteString.length);
-        let ia = new Uint8Array(ab);
+    /**
+     * Base64 转 Blob
+     * @param {string} dataURI - base64 编码的字符串
+     * @returns {Blob|null}
+     */
+    dataURItoBlob(dataURI) {
+        if (!dataURI || !dataURI.includes(',')) {
+            return null;
+        }
+        const byteString = window.atob(dataURI.split(',')[1]);
+        const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+        const ab = new ArrayBuffer(byteString.length);
+        const ia = new Uint8Array(ab);
         for (let i = 0; i < byteString.length; i++) {
             ia[i] = byteString.charCodeAt(i);
         }
         return new Blob([ab], { type: mimeString });
     },
-    getFileURL: function(file) { //文件生成链接
-        var getUrl = null;  
-        if (window.createObjectURL && window.createObjectURL != undefined) { // basic
-            getUrl = window.createObjectURL(file);   
-        } else if (window.URL && window.URL != undefined) { // mozilla(firefox)
-            getUrl = window.URL.createObjectURL(file);   
-        } else if (window.webkitURL && window.webkitURL != undefined) { // webkit or chrome
-            getUrl = window.webkitURL.createObjectURL(file);   
-        } else {
-            getUrl = '';
-        }  
-        return getUrl;
+
+    /**
+     * 生成文件预览 URL
+     * @param {Blob|File} file - 文件对象
+     * @returns {string}
+     */
+    getFileURL(file) {
+        if (!file) return '';
+        try {
+            return URL.createObjectURL(file);
+        } catch (e) {
+            console.error('生成文件URL失败:', e);
+            return '';
+        }
     }
-}
+};
 
 export default tool;

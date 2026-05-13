@@ -19,38 +19,39 @@ export default {
     },
     methods: {
         init(){
-            var _this = this;
-            _this.percent = ((_this.cal.eaten / _this.cal.calories).toFixed(2))*100;
-            var _F = F2,
+            const _this = this;
+            const calories = Number(_this.cal.calories) || 1;
+            _this.percent = Math.min(((_this.cal.eaten / calories).toFixed(2)) * 100, 100);
+            const _F = F2,
                 Shape = _F.Shape,
                 G = _F.G,
                 Util = _F.Util,
                 Global = _F.Global;
-            var Vector2 = G.Vector2;
+            const Vector2 = G.Vector2;
             Shape.registerShape('interval', 'polar-tick', {
                 draw: function draw(cfg, container) {
-                    var points = this.parsePoints(cfg.points);
-                    var style = Util.mix({
+                    const points = this.parsePoints(cfg.points);
+                    const style = Util.mix({
                         stroke: cfg.color
                     }, Global.shape.interval, cfg.style);
 
-                    var newPoints = points.slice(0);
+                    let newPoints = points.slice(0);
                     if (this._coord.transposed) {
                         newPoints = [points[0], points[3], points[2], points[1]];
                     }
 
-                    var center = cfg.center;
-                    var x = center.x,
+                    const center = cfg.center;
+                    const x = center.x,
                         y = center.y;
-                    var v = [1, 0];
-                    var v0 = [newPoints[0].x - x, newPoints[0].y - y];
-                    var v1 = [newPoints[1].x - x, newPoints[1].y - y];
-                    var v2 = [newPoints[2].x - x, newPoints[2].y - y];
+                    const v = [1, 0];
+                    const v0 = [newPoints[0].x - x, newPoints[0].y - y];
+                    const v1 = [newPoints[1].x - x, newPoints[1].y - y];
+                    const v2 = [newPoints[2].x - x, newPoints[2].y - y];
 
-                    var startAngle = Vector2.angleTo(v, v1);
-                    var endAngle = Vector2.angleTo(v, v2);
-                    var r0 = Vector2.length(v0);
-                    var r = Vector2.length(v1);
+                    let startAngle = Vector2.angleTo(v, v1);
+                    let endAngle = Vector2.angleTo(v, v2);
+                    const r0 = Vector2.length(v0);
+                    const r = Vector2.length(v1);
 
                     if (startAngle >= 1.5 * Math.PI) {
                         startAngle = startAngle - 2 * Math.PI;
@@ -60,8 +61,8 @@ export default {
                         endAngle = endAngle - 2 * Math.PI;
                     }
 
-                    var lineWidth = r - r0;
-                    var newRadius = r - lineWidth / 2;
+                    const lineWidth = r - r0;
+                    const newRadius = r - lineWidth / 2;
                     return container.addShape('Arc', {
                         className: 'interval',
                         attrs: Util.mix({
@@ -76,38 +77,38 @@ export default {
                     });
                 }
             });
-            var data = [{
+            const data = [{
                 const: 'a',
                 actual: _this.percent,
                 expect: 100
             }];
-            var chart = new F2.Chart({
+            _this.chart = new F2.Chart({
                 id: _this.cal.date,
                 padding: [0,0,0,0],
                 pixelRatio: window.devicePixelRatio
             });
-            chart.source(data, {
+            _this.chart.source(data, {
                 actual: {
                     max: 100,
                     min: 0,
                     nice: false
                 }
             });
-            chart.coord('polar', {
+            _this.chart.coord('polar', {
                 transposed: true,
                 innerRadius: 0.8,
                 startAngle: - 1.3 * Math.PI,
                 endAngle: 0.3 * Math.PI
             });
-            chart.axis(false);
-            chart.interval().position('const*expect').shape('polar-tick').size(8).color('#e9e9e9').animate(false); // 背景条
-            chart.interval().position('const*actual').shape('polar-tick').size(8).color('l(0) 0:#ff5e38 1:#ffaf41').animate({
+            _this.chart.axis(false);
+            _this.chart.interval().position('const*expect').shape('polar-tick').size(8).color('#e9e9e9').animate(false); // 背景条
+            _this.chart.interval().position('const*actual').shape('polar-tick').size(8).color('l(0) 0:#ff5e38 1:#ffaf41').animate({
                 appear: {
                     duration: 1100,
                     easing: 'linear',
                     animation: function animation(shape, animateCfg) {
-                        var startAngle = shape.attr('startAngle');
-                        var endAngle = shape.attr('endAngle');
+                        let startAngle = shape.attr('startAngle');
+                        let endAngle = shape.attr('endAngle');
                         if (startAngle > endAngle) {
                             // -Math.PI/2 到 0
                             endAngle += Math.PI * 2;
@@ -118,7 +119,7 @@ export default {
                                 endAngle: endAngle
                             }
                         }, animateCfg)).onUpdate(function(frame) {
-                            var str = document.getElementById(_this.cal.date+'1');
+                            const str = document.getElementById(_this.cal.date+'1');
                             if(str){
                                 str.innerHTML = parseInt(frame * _this.cal.calories);
                             }
@@ -126,17 +127,22 @@ export default {
                     }
                 }
             }); // 实际进度
-            var str = `<div class="log-master">
+            const str = `<div class="log-master">
                             <div class="log-master-label" id="${_this.cal.date+'1'}">0</div>
                             <div class="log-master-span">Calories left</div>
                             <div class="log-master-tag">DETAIL</div>
                         </div>`
-            chart.guide().html({
+            _this.chart.guide().html({
                 position: ['50%', '80%'],
                 // html: '<div style="width: 3rem;color: #ccc;white-space: nowrap;text-align:center;">' + '<p style="font-size: 18px;margin:0;">Calories left</p>' + '<p id="'+_this.cal.date+'1" style="font-size: 0.48rem;color:#282c37;margin:0;font-weight: bold;">0</p>' + '</div>'
                 html: str
             });
-            chart.render();
+            _this.chart.render();
+        }
+    },
+    beforeDestroy(){
+        if(this.chart){
+            this.chart.destroy();
         }
     }
 }

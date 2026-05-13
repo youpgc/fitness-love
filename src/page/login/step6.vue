@@ -34,7 +34,7 @@ export default {
   components: {
     headBar
   },
-  name: 'step5',
+  name: 'step6',
   data () {
     return {
       headdata: {
@@ -52,18 +52,13 @@ export default {
     }
   },
   created(){
-    var data = this.$route.params;
+    const data = { ...this.$route.params };
     this.info = data;
-    this.initPage();
   },
   methods: {
-    initPage(){
-      console.log(this.info)
-    },
     nextStep(){
       const _this = this;
-      let data = _this.info;
-      data['infoStatus'] = 1;
+      const data = { ..._this.info, infoStatus: 1 };
       _this.DB.put(data, function(res){
         _this.$router.push({
           path: '/',

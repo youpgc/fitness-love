@@ -1,8 +1,7 @@
-import vue from 'vue';
+import Vue from 'vue';
+import toast from '../../components/tool/toast';
 
-import toast from '../../components/tool/toast'
-
-const ToastConstructor = vue.extend(toast)
+const ToastConstructor = Vue.extend(toast);
 
 function showToast(title, status = false, type = false, getCan = function() {}, getFun = function() {}, duration = 1000) {
     const toastDom = new ToastConstructor({
@@ -15,16 +14,26 @@ function showToast(title, status = false, type = false, getCan = function() {}, 
                 getCan: getCan,
                 getFun: getFun,
                 show: true
-            }
+            };
         }
-    })
-    document.body.appendChild(toastDom.$el)
+    });
+    document.body.appendChild(toastDom.$el);
     if (!type) {
-        setTimeout(() => { toastDom.show = false }, duration)
+        setTimeout(() => {
+            toastDom.show = false;
+            // 清理DOM，防止内存泄漏
+            setTimeout(() => {
+                if (toastDom.$el && toastDom.$el.parentNode) {
+                    document.body.removeChild(toastDom.$el);
+                }
+                toastDom.$destroy();
+            }, 300);
+        }, duration);
     }
 }
 
 function regToast() {
-    vue.prototype.$toast = showToast
+    Vue.prototype.$toast = showToast;
 }
+
 export default regToast;

@@ -1,6 +1,6 @@
 <template>
     <div class="bar-chart" v-if="recommend">
-        <canvas id="barChart"></canvas>
+        <canvas :id="'barChart-' + _uid"></canvas>
         <div class="bar-cup" v-if="barCup">
             <div class="bar-total">{{barCup.total}}</div>
             <div class="bar-recom">{{barCup.recom}}</div>
@@ -22,12 +22,13 @@ export default {
   },
   methods: {
     getBar() {
-        const chart = new F2.Chart({
-            id: 'barChart',
+        const chartId = 'barChart-' + this._uid;
+        this.chart = new F2.Chart({
+            id: chartId,
             pixelRatio: window.devicePixelRatio
         });
 
-        chart.source(this.recommend, {
+        this.chart.source(this.recommend, {
             value: {
                 ticks: [ 0, 200, 400, 600, 800, 1000 ]
             },
@@ -35,7 +36,7 @@ export default {
                 tickCount: 5
             }
         });
-        chart.tooltip({
+        this.chart.tooltip({
             showItemMarker: false,
             onShow: function onShow(ev) {
                 const items = ev.items;
@@ -45,7 +46,7 @@ export default {
             }
         });
         this.recommend.forEach((obj)=> {
-            chart.guide().text({
+            this.chart.guide().text({
                 position: [obj.name, obj.value],
                 content: obj.value,
                 style: {
@@ -55,11 +56,16 @@ export default {
                 offsetY: -4
             })
         })
-        chart.legend(false);
-        chart.interval()
+        this.chart.legend(false);
+        this.chart.interval()
         .position('name*value')
         .color('name', [ '#5AC8FB', '#5856D6', '#FF5E3A', '#44DB5E' ]);
-        chart.render();
+        this.chart.render();
+    },
+    beforeDestroy(){
+        if(this.chart){
+            this.chart.destroy();
+        }
     }
   }
 };

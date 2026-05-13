@@ -5,7 +5,7 @@
       <calendar @viewStick="getStick" class="shadow"></calendar>
       <div class="plan-list" :style="'height:calc(100% - 1.82rem - ' + 0.9*stick + 'rem'">
         <div class="plan-item diary-temp" v-for="(item,index) in planList" :key="index">
-          <div class="plan-item-time ellipsis"><i :style="'background:'+color[index]" class="plan-time-tag"></i><span>{{item.date}}</span></div>
+          <div class="plan-item-time ellipsis"><i :style="'background:'+color[index % color.length]" class="plan-time-tag"></i><span>{{item.date}}</span></div>
           <div class="plan-item-title">{{item.title}}</div>
           <div class="plan-item-tag">
             <div class="plan-tag-item">

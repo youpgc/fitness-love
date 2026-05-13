@@ -74,11 +74,12 @@ export default {
         }
     },
     created(){
-        var param = this.$route.params;
+        const param = this.$route.params;
         if(param.animat){
             this.animat = true;
         }
-        var data = JSON.parse(window.localStorage.getItem('infoData'));
+        const raw = window.localStorage.getItem('infoData');
+        const data = raw ? JSON.parse(raw) : {};
         this.infoData = data;
     },
     mounted(){
@@ -90,7 +91,7 @@ export default {
             if(_this.DB.db){
                 _this.DB.get(function(res){
                     _this.infoData = res;
-                    var blob = res.viaBlob;
+                    const blob = res.viaBlob;
                     _this.icon.via = _this.tool.getFileURL(blob);
                 })
             }else{

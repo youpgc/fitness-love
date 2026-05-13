@@ -74,15 +74,15 @@ export default {
         }
     },
     nextStep(){
-      var _this = this;
-      var msg = '';
+      const _this = this;
+      let msg = '';
       if(_this.formData.goal.length==0){
         msg = 'Please enter your goal'
       }
       if(msg.length>0){
         _this.$toast(msg);
       }else{
-        var data = _this.$route.params;
+        const data = { ..._this.$route.params };
         data['goal'] = _this.formData.goal;
         data['goal_unit'] = _this.unit.title;
         data['step'] = 3;

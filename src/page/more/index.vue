@@ -32,7 +32,7 @@ export default {
         text: 'More'
       },
       moreList: [
-        {title: 'Udgrade Pro', icon: require('@/assets/images/more-01.png'), link: null},
+        {title: 'Upgrade Pro', icon: require('@/assets/images/more-01.png'), link: null},
         {title: 'My Profile', icon: require('@/assets/images/more-02.png'), link: '/mine'},
         {title: 'My Food and Recipes', icon: require('@/assets/images/more-03.png'), link: '/food_recipes'},
         {title: 'Graph', icon: require('@/assets/images/more-04.png'), link: null},

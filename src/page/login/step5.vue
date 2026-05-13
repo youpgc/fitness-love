@@ -71,17 +71,17 @@ export default {
       }
     },
     nextStep(){
-      var _this = this;
-      var msg = '';
+      const _this = this;
+      let msg = '';
       if(this.formData.tall.length==0){
         msg = 'Please enter your tall';
-      }else if(this.formData.weight==0){
+      }else if(this.formData.weight.length==0){
         msg = 'Please enter your currently weight';
       }
       if(msg.length>0){
         _this.$toast(msg);
       }else{
-        var data = _this.$route.params;
+        const data = { ..._this.$route.params };
         data['tall'] = _this.formData.tall;
         data['currently_weight'] = _this.formData.weight;
         data['tall_unit'] = _this.formData.size;

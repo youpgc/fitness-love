@@ -178,36 +178,33 @@ export default {
       }
     },
     getItem(item,index){
-      var status = item.select;
+      const selected = item.select;
       if(this.tab[0].active){
-        if(status){
+        if(selected){
           this.food[index].index = '- -';
           this.food[index].style = '';
           this.selectIndex --;
         }else{
-          var _index = 0;
+          let _index = 0;
           for(let i=0;i<this.AG.length;i++){
-            var status = false;
+            let isUsed = false;
             for(let x=0;x<this.food.length;x++){
               if(this.food[x].index == this.AG[i]){
-                status = true;
+                isUsed = true;
                 break;
               }
             }
-            if(status == false){
+            if(isUsed == false){
               _index = i;
               break;
             }
           }
           this.food[index].index = this.AG[_index];
-          var colorIndex = _index;
-          if(colorIndex >= this.color.length){
-            colorIndex = colorIndex - this.color.length;
-          }
+          const colorIndex = _index % this.color.length;
           this.food[index].style = 'background-color:'+this.color[colorIndex];
           this.selectIndex ++;
         }
-        this.food[index].select = !status;
+        this.food[index].select = !selected;
       }
     }
   }

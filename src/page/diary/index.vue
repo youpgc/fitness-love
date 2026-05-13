@@ -46,7 +46,6 @@
 
 <script>
 import navBar from '@/components/common/nav';
-import Swiper from 'swiper';
 import infoHtml from '@/components/dairy/info';
 import scheduleHtml from '@/components/dairy/schedule';
 import planHtml from '@/components/dairy/plan';
@@ -211,7 +210,7 @@ export default {
       this.DB.init();
     },
     initPage(){
-      var _this = this;
+      const _this = this;
       if(_this.DB.db){
         _this.getList();
       }else{
@@ -221,8 +220,8 @@ export default {
       }
     },
     getList(){
-      var _this = this;
-      var loginStatus = false;
+      const _this = this;
+      let loginStatus = false;
       new Promise((resolve, reject)=>{
 
         _this.DB.get(function(res){
@@ -233,7 +232,7 @@ export default {
             loginStatus = true;
             // 获取最新消息
             res['msgIndex'] = 0;
-            var data = JSON.stringify(res);
+            const data = JSON.stringify(res);
             if(JSON.parse(data)['infoStatus'] == 1){
               window.localStorage.setItem('infoData',data);
               for(let key in res){
@@ -253,7 +252,7 @@ export default {
       }).then((res)=>{
         if(!loginStatus){
           _this.$toast('login failure');
-          window.localStorage.setItem('infoData',{ status: false});
+          window.localStorage.setItem('infoData', JSON.stringify({ status: false }));
           setTimeout(()=>{
             _this.$router.push({
               path: '/login',
@@ -267,8 +266,8 @@ export default {
       })
     },
     getViaImg(){
-      var _this = this;
-      var blob = _this.infoData.viaBlob;
+      const _this = this;
+      const blob = _this.infoData.viaBlob;
       _this.icon.portrait = _this.tool.getFileURL(blob);
     }
   }

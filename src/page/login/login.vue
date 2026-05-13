@@ -70,9 +70,9 @@ export default {
     },
     // 表单验证
     login(){
-      var msg = '';
-      var regPhone = /^1(3|4|5|7|8)\d{9}$/;
-      var regEmail = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/; 
+      let msg = '';
+      const regPhone = /^1[3-9]\d{9}$/;
+      const regEmail = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/; 
       if(this.type && this.formData.email.length==0){
         msg = 'Please enter your email address';
       }else if(this.type && this.formData.email.length>0 && !regEmail.test(this.formData.email)){
@@ -92,14 +92,14 @@ export default {
     },
     // 登录请求
     saveLog(){
-      var _this = this;
-      var member = 'email', pwd = _this.formData.email;
+      const _this = this;
+      let member = 'email', pwd = _this.formData.email;
       if(_this.formData.email.length == 0 && _this.formData.phone.length>0){
         member = 'phone', pwd = _this.formData.phone;
       }
       _this.DB.getItem(member, pwd, function(res){
         if(res.password && res.password == _this.formData.pwd){
-          var data = res;
+          const data = res;
           data['title'] = 'login';
           data['status'] = true;
           _this.DB.put(data, function(res){
