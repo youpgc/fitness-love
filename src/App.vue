@@ -7,22 +7,41 @@
 <script>
 export default {
   name: 'App',
-  created(){
-    var data = window.localStorage.getItem('infoData');
-    data = JSON.parse(data);
-    if(!data){
-      this.$router.push({
-        name: 'startIndex',
-        path: '/startIndex'
-      })
-    }else if(data && !data.status){
-      this.$router.push({
-        name: 'login',
-        path: '/login'
-      })
+  created() {
+    this.checkAuth();
+  },
+  methods: {
+    /**
+     * 检查用户认证状态
+     */
+    checkAuth() {
+      const storedData = localStorage.getItem('infoData');
+      
+      if (!storedData) {
+        this.redirectTo('startIndex');
+        return;
+      }
+      
+      try {
+        const data = JSON.parse(storedData);
+        if (!data.status) {
+          this.redirectTo('login');
+        }
+      } catch (e) {
+        console.error('解析用户数据失败:', e);
+        this.redirectTo('startIndex');
+      }
+    },
+    
+    /**
+     * 路由跳转
+     * @param {string} name - 路由名称
+     */
+    redirectTo(name) {
+      this.$router.push({ name });
     }
   }
-}
+};
 </script>
 
 <style>

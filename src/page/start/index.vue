@@ -1,111 +1,153 @@
 <template>
-    <div class="h100">
-      <swiper :options="swiperOption">
-        <swiper-slide v-for="(slide, index) in swiperSlides" :key="index">
-          <div class="navig" :style="'background-image:url('+slide.bac+')'">
-            <div class="navig-title" v-if="index < swiperSlides.length-1">{{slide.title}}</div>
-            <div class="navig-cont" v-else>
-              <div class="navig-logo">
-                <img :src="logo"/>
-                <div class="navig-logo-title">FITNESS LOVE</div>
-              </div>
-              <div class="navig-brief">
-                Fitness Love - This app will allow you to achieve great results, within a short period of time.
-              </div>
-              <div class="navig-btns">
-                <router-link :to="{ name: 'register', params: { type: 'phone'}}" class="navig-btn sign-facebook">sign up with phone number</router-link>
-                <router-link :to="{ name: 'register', params: { type: 'email'}}" class="navig-btn sign-email">sign up with email</router-link>
-              </div>
+  <div class="h100">
+    <swiper :options="swiperOption">
+      <swiper-slide v-for="(slide, index) in swiperSlides" :key="index">
+        <div class="navig" :style="{ backgroundImage: `url(${slide.bac})` }">
+          <div class="navig-title" v-if="index < swiperSlides.length - 1">
+            {{ slide.title }}
+          </div>
+          <div class="navig-cont" v-else>
+            <div class="navig-logo">
+              <img :src="logo" alt="Fitness Love Logo" />
+              <div class="navig-logo-title">FITNESS LOVE</div>
+            </div>
+            <div class="navig-brief">
+              Fitness Love - This app will allow you to achieve great results, within a short period of time.
+            </div>
+            <div class="navig-btns">
+              <router-link 
+                :to="{ name: 'register', params: { type: 'phone' } }" 
+                class="navig-btn sign-facebook"
+              >
+                sign up with phone number
+              </router-link>
+              <router-link 
+                :to="{ name: 'register', params: { type: 'email' } }" 
+                class="navig-btn sign-email"
+              >
+                sign up with email
+              </router-link>
             </div>
           </div>
-        </swiper-slide>
-        <div class="swiper-pagination" slot="pagination"></div>
-      </swiper>
-      <div class="swiper-tool" v-if="swiperIndex == 4">
-        <div>&nbsp;</div>
-        <div class="swiper-button swiper-next" @click="toLogin">LOG IN</div>
-      </div>
-      <div class="swiper-tool" v-else>
-        <div class="swiper-button swiper-skip" @click="skip">SKIP</div>
-        <div class="swiper-button swiper-next">NEXT</div>
-      </div>
+        </div>
+      </swiper-slide>
+      <div class="swiper-pagination" slot="pagination"></div>
+    </swiper>
+    
+    <div class="swiper-tool" v-if="swiperIndex === lastSlideIndex">
+      <div>&nbsp;</div>
+      <div class="swiper-button swiper-next" @click="toLogin">LOG IN</div>
     </div>
+    <div class="swiper-tool" v-else>
+      <div class="swiper-button swiper-skip" @click="skip">SKIP</div>
+      <div class="swiper-button swiper-next">NEXT</div>
+    </div>
+  </div>
 </template>
 
 <script>
-import Swiper from 'swiper';
-
 export default {
   name: 'startIndex',
-  data () {
+  
+  data() {
     return {
       logo: require('@/assets/images/logo.png'),
       swiperIndex: 0,
       swiperOption: {},
       swiperSlides: [
-        {title: 'SIMPLE TIPS TO BALANCE YOUR MIND, BODY & SOUL', bac: require("@/assets/images/back-01.jpg")},
-        {title: 'SMALL CHANGES CAN MAKE A BIG DIFFERENCE', bac: require("@/assets/images/back-02.jpg")},
-        {title: 'SHARE YOUR WORKOUT PLAN WITH YOUR FRIEND', bac: require("@/assets/images/back-03.jpg")},
-        {title: 'TRACK YOUR NUTRITION, FITNESS, & HEALTH DATA', bac: require("@/assets/images/back-04.jpg")},
-        {title: '', bac: require("@/assets/images/back-05.jpg")}
-      ]
-    }
-  },
-  created(){
-     var _this = this;
-    _this.swiperOption = {
-      initialSlide: 0,
-      navigation: {
-        nextEl: '.swiper-next',
-      },  
-      pagination: {
-        el: '.swiper-pagination',
-      },
-      on: {
-        touchStart: function(){
-          if(this.realIndex != 0 && this.realIndex != 4){
-            this.allowSlidePrev = true;
-            this.allowSlideNext = true;
-          }else if(this.realIndex == 0){
-            this.allowSlidePrev = false;
-          }else if(this.realIndex == 4){
-            this.allowSlideNext = false;
-          }
+        { 
+          title: 'SIMPLE TIPS TO BALANCE YOUR MIND, BODY & SOUL', 
+          bac: require('@/assets/images/back-01.jpg') 
         },
-        slideChange: function(){
-          _this.swiperIndex = this.realIndex;
+        { 
+          title: 'SMALL CHANGES CAN MAKE A BIG DIFFERENCE', 
+          bac: require('@/assets/images/back-02.jpg') 
+        },
+        { 
+          title: 'SHARE YOUR WORKOUT PLAN WITH YOUR FRIEND', 
+          bac: require('@/assets/images/back-03.jpg') 
+        },
+        { 
+          title: 'TRACK YOUR NUTRITION, FITNESS, & HEALTH DATA', 
+          bac: require('@/assets/images/back-04.jpg') 
+        },
+        { 
+          title: '', 
+          bac: require('@/assets/images/back-05.jpg') 
         }
-      }
+      ]
+    };
+  },
+  
+  computed: {
+    lastSlideIndex() {
+      return this.swiperSlides.length - 1;
     }
   },
+  
+  created() {
+    this.initSwiper();
+  },
+  
   methods: {
-    skip(){
-      console.log('skip')
-      // this.slideTo(this.swiperSlides.length);
+    /**
+     * 初始化 Swiper 配置
+     */
+    initSwiper() {
+      const _this = this;
+      this.swiperOption = {
+        initialSlide: 0,
+        navigation: {
+          nextEl: '.swiper-next'
+        },
+        pagination: {
+          el: '.swiper-pagination'
+        },
+        on: {
+          touchStart() {
+            const { realIndex } = this;
+            this.allowSlidePrev = realIndex !== 0;
+            this.allowSlideNext = realIndex !== this.slides.length - 1;
+          },
+          slideChange() {
+            _this.swiperIndex = this.realIndex;
+          }
+        }
+      };
     },
-    toLogin(){
-      this.$router.push({
-        path: '/login',
-        name: 'login'
-      });
+    
+    /**
+     * 跳过引导页
+     */
+    skip() {
+      console.log('skip');
+    },
+    
+    /**
+     * 跳转到登录页
+     */
+    toLogin() {
+      this.$router.push({ name: 'login' });
     }
   }
-}
+};
 </script>
 
 <style scoped>
-.swiper-container{
+.swiper-container {
   width: 100%;
   height: 100%;
 }
-.navig{
+
+.navig {
   width: 100%;
   height: 100%;
   background-position: center;
   background-repeat: no-repeat;
   background-size: 100%;
 }
-.navig-title{
+
+.navig-title {
   padding: 0 0.48rem;
   line-height: 1.4;
   font-size: 0.76rem;
@@ -116,7 +158,8 @@ export default {
   position: absolute;
   bottom: 1.4rem;
 }
-.swiper-tool{
+
+.swiper-tool {
   width: 100%;
   height: 1rem;
   line-height: 1rem;
@@ -129,35 +172,44 @@ export default {
   bottom: 0.26rem;
   z-index: 1;
 }
-.swiper-button{
+
+.swiper-button {
   outline: none;
+  cursor: pointer;
 }
-.navig-cont{
+
+.navig-cont {
   width: 100%;
   padding: 1.8rem 0.5rem 0;
   color: #fff;
 }
-.navig-logo{
+
+.navig-logo {
   padding-bottom: 0.76rem;
 }
-.navig-logo img{
+
+.navig-logo img {
   width: 2.4rem;
   height: 2.4rem;
   margin-bottom: 0.6rem;
 }
-.navig-logo-title{
+
+.navig-logo-title {
   line-height: 1;
   font-weight: bold;
   font-size: 0.6rem;
 }
-.navig-brief{
+
+.navig-brief {
   font-size: 0.36rem;
   line-height: 1.5;
 }
-.navig-btns{
+
+.navig-btns {
   padding-top: 1rem;
 }
-.navig-btn{
+
+.navig-btn {
   display: block;
   width: 100%;
   height: 1rem;
@@ -167,11 +219,14 @@ export default {
   color: #fff;
   border-radius: 0.5rem;
   margin-bottom: 0.5rem;
+  text-decoration: none;
 }
-.sign-facebook{
+
+.sign-facebook {
   background: #3b5998;
 }
-.sign-email{
+
+.sign-email {
   background: #fff;
   color: #282c37;
 }

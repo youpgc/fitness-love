@@ -1,121 +1,170 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from 'vue';
+import Router from 'vue-router';
 
-Vue.use(Router)
+Vue.use(Router);
 
-function href(...arr) {
-    var str = '';
-    arr.map((item) => {
-        str += '/' + item;
-    })
-    return () =>
-        import ('@/page' + str);
-}
-export default new Router({
-    mode: 'history',
-    routes: [{
-        path: "*",
-        redirect: "/"
-    }, {
-        path: '/',
-        name: 'diaryIndex',
-        alias: '/diaryIndex',
-        component: href('diary', 'index')
-    }, {
-        path: '/msgIndex',
-        name: 'msgIndex',
-        component: href('diary', 'message')
-    }, {
-        path: '/mine',
-        name: 'mine',
-        component: href('diary', 'mine')
-    },{
-        path: '/meal',
-        name: 'meal',
-        component: href('diary', 'meal')
-    }, {
-        path: '/plan',
-        name: 'plan',
-        component: href('diary', 'planEdit')
-    }, {
-        path: '/exeIndex',
-        name: 'exeIndex',
-        component: href('exercires', 'index')
-    }, {
-        path: '/exeSearch',
-        name: 'exeSearch',
-        component: href('exercires', 'search')
-    }, {
-        path: '/autoTrack',
-        name: 'autoTrack',
-        component: href('exercires', 'autoTrack')
-    }, {
-        path: '/addNewPlan',
-        name: 'addNewPlan',
-        component: href('exercires', 'addNewPlan')
-    }, {
-        path: '/moreIndex',
-        name: 'moreIndex',
-        component: href('more', 'index')
-    }, {
-        path: '/food_recipes',
-        name: 'food_recipes',
-        component: href('more', 'food_recipes')
-    }, {
-        path: '/devices',
-        name: 'devices',
-        component: href('more', 'devices')
-    }, {
-        path: '/blog',
-        name: 'blog',
-        component: href('more', 'blog')
-    }, {
-        path: '/blogInfo',
-        name: 'blogInfo',
-        component: href('more', 'blogInfo')
-    }, {
-        path: '/workIndex',
-        name: 'workIndex',
-        component: href('workouts', 'index')
-    }, {
-        path: '/startIndex',
-        name: 'startIndex',
-        component: href('start', 'index')
-    }, {
-        path: '/login',
-        name: 'login',
-        component: href('login', 'login')
-    }, {
-        path: '/register',
-        name: 'register',
-        component: href('login', 'register')
-    }, {
-        path: '/forgot',
-        name: 'forgot',
-        component: href('login', 'forgot')
-    }, {
-        path: '/step1',
-        name: 'step1',
-        component: href('login', 'step1')
-    }, {
-        path: '/step2',
-        name: 'step2',
-        component: href('login', 'step2')
-    }, {
-        path: '/step3',
-        name: 'step3',
-        component: href('login', 'step3')
-    }, {
-        path: '/step4',
-        name: 'step4',
-        component: href('login', 'step4')
-    }, {
-        path: '/step5',
-        name: 'step5',
-        component: href('login', 'step5')
-    }, {
-        path: '/step6',
-        name: 'step6',
-        component: href('login', 'step6')
-    }]
-})
+/**
+ * 动态导入页面组件
+ * @param  {...string} paths - 路径片段
+ * @returns {Function} 组件导入函数
+ */
+const loadPage = (...paths) => {
+  const path = paths.join('/');
+  return () => import(`@/page/${path}`);
+};
+
+/**
+ * 路由配置
+ */
+const routes = [
+  // 默认路由
+  {
+    path: '*',
+    redirect: '/'
+  },
+  
+  // 主页 - 日记
+  {
+    path: '/',
+    name: 'diaryIndex',
+    alias: '/diaryIndex',
+    component: loadPage('diary', 'index')
+  },
+  {
+    path: '/msgIndex',
+    name: 'msgIndex',
+    component: loadPage('diary', 'message')
+  },
+  {
+    path: '/mine',
+    name: 'mine',
+    component: loadPage('diary', 'mine')
+  },
+  {
+    path: '/meal',
+    name: 'meal',
+    component: loadPage('diary', 'meal')
+  },
+  {
+    path: '/plan',
+    name: 'plan',
+    component: loadPage('diary', 'planEdit')
+  },
+  
+  // 运动
+  {
+    path: '/exeIndex',
+    name: 'exeIndex',
+    component: loadPage('exercires', 'index')
+  },
+  {
+    path: '/exeSearch',
+    name: 'exeSearch',
+    component: loadPage('exercires', 'search')
+  },
+  {
+    path: '/autoTrack',
+    name: 'autoTrack',
+    component: loadPage('exercires', 'autoTrack')
+  },
+  {
+    path: '/addNewPlan',
+    name: 'addNewPlan',
+    component: loadPage('exercires', 'addNewPlan')
+  },
+  
+  // 更多
+  {
+    path: '/moreIndex',
+    name: 'moreIndex',
+    component: loadPage('more', 'index')
+  },
+  {
+    path: '/food_recipes',
+    name: 'food_recipes',
+    component: loadPage('more', 'food_recipes')
+  },
+  {
+    path: '/devices',
+    name: 'devices',
+    component: loadPage('more', 'devices')
+  },
+  {
+    path: '/blog',
+    name: 'blog',
+    component: loadPage('more', 'blog')
+  },
+  {
+    path: '/blogInfo',
+    name: 'blogInfo',
+    component: loadPage('more', 'blogInfo')
+  },
+  
+  // 训练
+  {
+    path: '/workIndex',
+    name: 'workIndex',
+    component: loadPage('workouts', 'index')
+  },
+  
+  // 启动页和登录
+  {
+    path: '/startIndex',
+    name: 'startIndex',
+    component: loadPage('start', 'index')
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: loadPage('login', 'login')
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: loadPage('login', 'register')
+  },
+  {
+    path: '/forgot',
+    name: 'forgot',
+    component: loadPage('login', 'forgot')
+  },
+  
+  // 注册步骤
+  {
+    path: '/step1',
+    name: 'step1',
+    component: loadPage('login', 'step1')
+  },
+  {
+    path: '/step2',
+    name: 'step2',
+    component: loadPage('login', 'step2')
+  },
+  {
+    path: '/step3',
+    name: 'step3',
+    component: loadPage('login', 'step3')
+  },
+  {
+    path: '/step4',
+    name: 'step4',
+    component: loadPage('login', 'step4')
+  },
+  {
+    path: '/step5',
+    name: 'step5',
+    component: loadPage('login', 'step5')
+  },
+  {
+    path: '/step6',
+    name: 'step6',
+    component: loadPage('login', 'step6')
+  }
+];
+
+const router = new Router({
+  mode: 'history',
+  routes
+});
+
+export default router;
